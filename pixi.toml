@@ -1,0 +1,18 @@
+[workspace]
+authors = ["Etienne Mathier <etienne@mathier.ch>"]
+channels = ["conda-forge"]
+name = "optiboard"
+platforms = ["osx-arm64"]
+version = "0.1.0"
+
+[tasks]
+
+[dependencies]
+marimo = ">=0.23.8,<0.24"
+numpy = ">=2.4.6,<3"
+scikit-learn = ">=1.8.0,<2"
+xgboost = ">=3.2.0,<4"
+matplotlib = ">=3.10.9,<4"
+plotly = ">=6.6.0,<7"
+polars = ">=1.41.2,<2"
+google-cloud-bigquery = ">=3.41.0,<4"
