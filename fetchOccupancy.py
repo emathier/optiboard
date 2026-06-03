@@ -1,14 +1,13 @@
 import polars as pl
 from google.cloud import bigquery
 from logging_config import get_logger
-log = get_logger(__name__)
+log = get_logger("fetchOccupancy")
+log.debug("Starting to fetch occupancy")
 
 
-log.info("Starting to fetch occupancy")
+log.debug("Initializing BigQuery client")   
 bq_client = bigquery.Client(project="optiswim-scraper")
-
-
-"""
+log.debug("BigQuery client initialized successfully")
 
 
 
@@ -18,13 +17,17 @@ QUERY = (
     'ORDER BY timestamp DESC'
 )
 
-# Diagnostics
-query_job = bq_client.query(QUERY)  
-rows = query_job.result()  
+# Fetching data
+log.debug(f"Executing query: {QUERY}")
+df = pl.from_arrow(bq_client.query(QUERY).to_arrow())
+log.info(f"Fetched {len(df)} rows from BigQuery")
 
-df = pl.from_arrow(rows.to_arrow())
+if df.is_empty():
+    log.critical("No data fetched from BigQuery")
+
+# Write to Parquet
+log.debug("Writing DataFrame to city-occupancy.parquet")
 df.write_parquet("city-occupancy.parquet")
-
-"""
+log.debug("DataFrame written to city-occupancy.parquet successfully")
 
 
