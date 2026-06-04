@@ -38,6 +38,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/noarch/comm-0.2.3-pyhe01879c_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/cpython-3.14.5-py314hd8ed1ab_100.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/cycler-0.12.1-pyhcf101f3_2.conda
+      - conda: https://conda.anaconda.org/conda-forge/noarch/dayplot-0.5.1-pyhcf101f3_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/db-dtypes-1.4.3-pyhd8ed1ab_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/decorator-5.3.1-pyhd8ed1ab_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/defusedxml-0.7.1-pyhd8ed1ab_0.tar.bz2
@@ -706,6 +707,18 @@ packages:
   license_family: BSD
   size: 14778
   timestamp: 1764466758386
+- conda: https://conda.anaconda.org/conda-forge/noarch/dayplot-0.5.1-pyhcf101f3_0.conda
+  sha256: 0a6c293e135c9c8f73a74155bb8ff7fd324768f9a6c515e896ab5d2312c6b004
+  md5: 0ba5045200877bc3520a744bc2337a9c
+  depends:
+  - python >=3.10
+  - matplotlib-base
+  - narwhals >=1.0
+  - python
+  license: MIT
+  license_family: MIT
+  size: 20494
+  timestamp: 1771403890900
 - conda: https://conda.anaconda.org/conda-forge/noarch/db-dtypes-1.4.3-pyhd8ed1ab_0.conda
   sha256: 158bc9e9a746f94071ab5e898654c8a6c629f91f0f5513fe0e9bb76a6509db71
   md5: 6980ad05960cb9edb80a186824269d70
