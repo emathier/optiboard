@@ -51,7 +51,7 @@ if age > timedelta(hours=1):
 
 # Write to Parquet
 log.debug("Writing DataFrame to city-occupancy.parquet")
-df.write_parquet("city-occupancy.parquet")
+df.write_parquet("data-files/city-occupancy.parquet")
 log.debug("DataFrame written to city-occupancy.parquet successfully")
 
 

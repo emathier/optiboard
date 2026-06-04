@@ -6,9 +6,9 @@ log = get_logger("interpolateWeather")
 log.debug("Starting to interpolate weather data")
 
 # Load data
-weather = dd.read_parquet("historical_weather.parquet").pl()
+weather = dd.read_parquet("data-files/historical_weather.parquet").pl()
 log.debug(f"Loaded weather data with shape {weather.shape}")
-occupancy = dd.read_parquet("city-occupancy.parquet").pl()
+occupancy = dd.read_parquet("data-files/city-occupancy.parquet").pl()
 log.debug(f"Loaded occupancy data with shape {occupancy.shape}")
 
 # Ensure weather is sorted by time
@@ -63,10 +63,10 @@ null_diag = pl.DataFrame({
 ])
 
 # Save result
-occupancy_weather.write_parquet("weather-occupancy-weather.parquet")
+occupancy_weather.write_parquet("data-files/occupancy-weather.parquet")
 
 # Print readable diagnostics table
 pl.Config.set_tbl_rows(len(null_diag))
 pl.Config.set_tbl_cols(len(null_diag.columns))
 log.debug(f"\n{null_diag}")
-log.info("Saved occupancy with interpolated weather to weather-occupancy-weather.parquet")
+log.info("Saved occupancy with interpolated weather to data-files/occupancy-weather.parquet")

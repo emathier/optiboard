@@ -8,7 +8,7 @@ import time
 
 @contextmanager
 def time_this(label):
-    start = time.time()  # <-- Changed from pl.time.time()
+    start = time.time()  
     yield
     log.debug(f"{label} took {time.time() - start:.4f}s")
 
@@ -44,5 +44,5 @@ df = df.with_columns(
 print(df.head())
 
 #write to file
-df.write_parquet("historical_weather.parquet")
+df.write_parquet("data-files/historical_weather.parquet")
 log.info("Saved historical weather data to historical_weather.parquet")
