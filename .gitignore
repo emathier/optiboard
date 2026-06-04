@@ -4,3 +4,4 @@
 __marimo__/*
 google-cloud-sdk/*
 .vscode/*
+__pycache__/*
