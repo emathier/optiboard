@@ -35,7 +35,7 @@ st.write("This plot shows on which days we have occupancy data available. The ea
 query = """
 SELECT DATE(timestamp) AS day,
 COUNT(*) AS total_records,
-FROM 'data-files/city-occupancy.parquet'
+FROM 'data-files/occupancy-weather.parquet'
 GROUP BY day
 ORDER BY day
 """
