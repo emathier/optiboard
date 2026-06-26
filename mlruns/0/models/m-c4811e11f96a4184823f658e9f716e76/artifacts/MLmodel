@@ -1,0 +1,31 @@
+artifact_path: /Users/etienne/optiboard/mlruns/0/models/m-c4811e11f96a4184823f658e9f716e76/artifacts
+flavors:
+  python_function:
+    data: model.ubj
+    env:
+      conda: conda.yaml
+      virtualenv: python_env.yaml
+    loader_module: mlflow.xgboost
+    python_version: 3.14.5
+  xgboost:
+    code: null
+    data: model.ubj
+    model_class: xgboost.sklearn.XGBRegressor
+    model_format: ubj
+    xgb_version: 3.2.0
+is_signature_from_type_hint: false
+mlflow_version: 3.13.0
+model_id: m-c4811e11f96a4184823f658e9f716e76
+model_size_bytes: 460353
+model_uuid: m-c4811e11f96a4184823f658e9f716e76
+prompts: null
+run_id: 0b5cf0eb5d3c48d0b8b71f4935130f6f
+signature:
+  inputs: '[{"type": "double", "name": "cloud_cover", "required": true}, {"type":
+    "double", "name": "apparent_temperature", "required": true}, {"type": "double",
+    "name": "wind_speed_10m", "required": true}, {"type": "double", "name": "precipitation",
+    "required": true}]'
+  outputs: '[{"type": "tensor", "tensor-spec": {"dtype": "float32", "shape": [-1]}}]'
+  params: null
+type_hint_from_example: false
+utc_time_created: '2026-06-11 13:02:10.155231'

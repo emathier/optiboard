@@ -18,7 +18,7 @@ I have been thinking about which benchmarks I want to optimize for. I think the 
 - Intra day benchmark: How accurate is the model predicting the occcupancy from a time in the day to the end of the day.
 - Inter day benchmark: How accurate is the model predicting the occupancy for the next 7 days.
 
-
 For getting started I will focus on the inter day benchmark as it is in my opinion easier to implement.
+            
 ---       
 """)

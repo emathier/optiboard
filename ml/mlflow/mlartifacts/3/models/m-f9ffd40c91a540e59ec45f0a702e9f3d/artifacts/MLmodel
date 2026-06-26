@@ -1,0 +1,32 @@
+artifact_path: mlflow-artifacts:/3/models/m-f9ffd40c91a540e59ec45f0a702e9f3d/artifacts
+flavors:
+  python_function:
+    data: model.ubj
+    env:
+      conda: conda.yaml
+      virtualenv: python_env.yaml
+    loader_module: mlflow.xgboost
+    python_version: 3.14.5
+  xgboost:
+    code: null
+    data: model.ubj
+    model_class: xgboost.sklearn.XGBRegressor
+    model_format: ubj
+    xgb_version: 3.2.0
+is_signature_from_type_hint: false
+mlflow_version: 3.13.0
+model_id: m-f9ffd40c91a540e59ec45f0a702e9f3d
+model_size_bytes: 477426
+model_uuid: m-f9ffd40c91a540e59ec45f0a702e9f3d
+prompts: null
+run_id: 705105ae7d3e485c8d2b6da3a6eeacd2
+signature:
+  inputs: '[{"type": "double", "name": "cloud_cover", "required": true}, {"type":
+    "double", "name": "apparent_temperature", "required": true}, {"type": "double",
+    "name": "wind_speed_10m", "required": true}, {"type": "double", "name": "precipitation",
+    "required": true}, {"type": "integer", "name": "weekday", "required": true}, {"type":
+    "integer", "name": "time_of_day", "required": true}]'
+  outputs: '[{"type": "tensor", "tensor-spec": {"dtype": "float32", "shape": [-1]}}]'
+  params: null
+type_hint_from_example: false
+utc_time_created: '2026-06-11 13:27:09.459958'

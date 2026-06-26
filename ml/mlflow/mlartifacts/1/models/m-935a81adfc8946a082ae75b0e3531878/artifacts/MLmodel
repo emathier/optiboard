@@ -1,0 +1,31 @@
+artifact_path: mlflow-artifacts:/1/models/m-935a81adfc8946a082ae75b0e3531878/artifacts
+flavors:
+  python_function:
+    data: model.ubj
+    env:
+      conda: conda.yaml
+      virtualenv: python_env.yaml
+    loader_module: mlflow.xgboost
+    python_version: 3.14.5
+  xgboost:
+    code: null
+    data: model.ubj
+    model_class: xgboost.sklearn.XGBRegressor
+    model_format: ubj
+    xgb_version: 3.2.0
+is_signature_from_type_hint: false
+mlflow_version: 3.13.0
+model_id: m-935a81adfc8946a082ae75b0e3531878
+model_size_bytes: 453517
+model_uuid: m-935a81adfc8946a082ae75b0e3531878
+prompts: null
+run_id: 2ef1e95325d5433480936d4d2c12e297
+signature:
+  inputs: '[{"type": "long", "name": "timestamp", "required": true}, {"type": "double",
+    "name": "cloud_cover", "required": true}, {"type": "double", "name": "apparent_temperature",
+    "required": true}, {"type": "double", "name": "wind_speed_10m", "required": true},
+    {"type": "double", "name": "precipitation", "required": true}]'
+  outputs: '[{"type": "tensor", "tensor-spec": {"dtype": "float32", "shape": [-1]}}]'
+  params: null
+type_hint_from_example: false
+utc_time_created: '2026-06-10 18:53:45.824573'

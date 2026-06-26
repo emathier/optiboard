@@ -7,6 +7,7 @@ version = "0.1.0"
 
 [tasks]
 sl = "streamlit run streamlit/Hello.py"
+mlf = "cd /Users/etienne/optiboard/ml/mlflow; mlflow server"
 
 [dependencies]
 marimo = ">=0.23.8,<0.24"
@@ -21,3 +22,4 @@ streamlit = ">=1.58.0,<2"
 duckdb = ">=1.5.3,<2"
 dayplot = ">=0.5.1,<0.6"
 mlflow = ">=3.13.0,<4"
+shap = ">=0.51.0,<0.52"
