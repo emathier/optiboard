@@ -88,7 +88,7 @@ def _(COVARIATES, TARGET, go, lgb, mo, test_df, train_df, val_df):
     train_data = lgb.Dataset(train_df[FEATURES].to_numpy(), label=train_df[TARGET[0]].to_numpy())
     val_data = lgb.Dataset(val_df[FEATURES].to_numpy(), label=val_df[TARGET[0]].to_numpy(), reference=train_data)
 
-    model = lgb.train({"objective":"regression","metric":"mae","verbosity":-1,"random_state":42}, 
+    model = lgb.train({"objective":"regression","metric":"mae,mape","verbosity":-1,"random_state":42}, 
                       train_data, num_boost_round=1000, valid_sets=val_data, callbacks=[lgb.early_stopping(50), lgb.log_evaluation(0)])
 
     plots = []
@@ -108,7 +108,6 @@ def _(COVARIATES, TARGET, go, lgb, mo, test_df, train_df, val_df):
 @app.cell
 def _(test_df):
     test_df
-
     return
 
 
