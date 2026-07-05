@@ -314,6 +314,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/noarch/setuptools-82.0.1-pyh332efcf_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/shellingham-1.5.4-pyhd8ed1ab_2.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/six-1.17.0-pyhe01879c_1.conda
+      - conda: https://conda.anaconda.org/conda-forge/noarch/skforecast-0.22.0-pyhd8ed1ab_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/skops-0.14-pyhd8ed1ab_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/slicer-0.0.8-pyhd8ed1ab_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/smart-open-7.6.1-h45c0699_0.conda
@@ -4886,6 +4887,24 @@ packages:
   run_exports: {}
   size: 18455
   timestamp: 1753199211006
+- conda: https://conda.anaconda.org/conda-forge/noarch/skforecast-0.22.0-pyhd8ed1ab_0.conda
+  sha256: 36ae7fb2fa6f4d47342c9cd805cbf793678405b5e239202ec34da5331a9caf05
+  md5: 28a199d70e0af269c59b00a286e612ba
+  depends:
+  - joblib >=1.1
+  - numba >=0.59
+  - numpy >=1.24
+  - optuna >=2.10
+  - pandas >=1.5
+  - python >=3.10
+  - rich >=13.9
+  - scikit-learn >=1.2
+  - tqdm >=4.57
+  license: BSD-3-Clause
+  license_family: BSD
+  run_exports: {}
+  size: 277792
+  timestamp: 1777017371264
 - conda: https://conda.anaconda.org/conda-forge/noarch/skops-0.14-pyhd8ed1ab_0.conda
   sha256: c083d3fe3a74dadb8178cb04fb6bfad3d290db0da54886cf5acba7a3f565a122
   md5: d795d4fe13682593ec37086912739073

@@ -1,0 +1,79 @@
+{
+    "avg": {
+        "model_params": {
+            "verbosity": -1,
+            "learning_rate": 0.07237790513035491,
+            "num_leaves": 142,
+            "objective": "l2"
+        },
+        "mlf_init_params": {
+            "lags": [
+                1,
+                12,
+                288,
+                2016
+            ],
+            "date_features": [
+                "<function decimal_hour at 0x327638ae0>",
+                "weekday",
+                "dayofyear"
+            ],
+            "num_threads": 1
+        },
+        "mlf_fit_params": {
+            "static_features": []
+        }
+    },
+    "q75": {
+        "model_params": {
+            "verbosity": -1,
+            "learning_rate": 0.023293101497972774,
+            "num_leaves": 105,
+            "objective": "quantile",
+            "alpha": 0.75
+        },
+        "mlf_init_params": {
+            "lags": [
+                1,
+                12,
+                288,
+                2016
+            ],
+            "date_features": [
+                "<function decimal_hour at 0x327638ae0>",
+                "weekday",
+                "dayofyear"
+            ],
+            "num_threads": 1
+        },
+        "mlf_fit_params": {
+            "static_features": []
+        }
+    },
+    "q25": {
+        "model_params": {
+            "verbosity": -1,
+            "learning_rate": 0.09408537450238813,
+            "num_leaves": 499,
+            "objective": "quantile",
+            "alpha": 0.25
+        },
+        "mlf_init_params": {
+            "lags": [
+                1,
+                12,
+                288,
+                2016
+            ],
+            "date_features": [
+                "<function decimal_hour at 0x327638ae0>",
+                "weekday",
+                "dayofyear"
+            ],
+            "num_threads": 1
+        },
+        "mlf_fit_params": {
+            "static_features": []
+        }
+    }
+}
