@@ -161,10 +161,10 @@ def _(mo):
 
 
 @app.cell
-def _(df_occupancy_weather, newest_occupancy, pl, requests):
+def _(COVARIATES, df_occupancy_weather, newest_occupancy, pl, requests):
     newest_occupancy
 
-    request_forecast = "https://api.open-meteo.com/v1/forecast?latitude=47.3667&longitude=8.55&forecast_days=3&hourly=cloud_cover,apparent_temperature,wind_speed_10m,precipitation&timezone=Europe%2FBerlin"
+    request_forecast = "https://api.open-meteo.com/v1/forecast?latitude=47.3667&longitude=8.55&forecast_days=4&hourly=cloud_cover,apparent_temperature,wind_speed_10m,precipitation&timezone=Europe%2FBerlin"
 
     response_forecast = requests.get(request_forecast)
 
@@ -189,6 +189,19 @@ def _(df_occupancy_weather, newest_occupancy, pl, requests):
         .unique(subset=["timestamp"], keep="first") # Keeps historical over forecast if they overlap
         .sort("timestamp", descending=True)
     ).drop(pl.col('bern'))
+
+    # Fill any null weather covariates using the forecast data (since the historical weather might not be available yet for the last 5-min intervals)
+    df_final = df_final.join(
+        forecast_data_upsampeled,
+        on="timestamp",
+        how="left",
+        suffix="_forecast"
+    )
+    for col in COVARIATES:
+        df_final = df_final.with_columns(
+            pl.col(col).fill_null(pl.col(f"{col}_forecast"))
+        )
+    df_final = df_final.drop([f"{col}_forecast" for col in COVARIATES])
 
     df_final.write_parquet('data-files/occupancy-weather-forecast.parquet')
     return (df_final,)
