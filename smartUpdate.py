@@ -180,10 +180,13 @@ def _(COVARIATES, df_occupancy_weather, newest_occupancy, pl, requests):
         how="diagonal"
     )
 
-    # Clean up any overlapping timestamps and sort
+    # Clean up any overlapping timestamps, sort and upsample to fill gaps
     df_final = (
         df_combined
         .unique(subset=["timestamp"], keep="first") # Keeps historical over forecast if they overlap
+        .sort("timestamp")
+        .upsample(every="5m", time_column="timestamp")
+        .with_columns(pl.col(COVARIATES).interpolate())
         .sort("timestamp", descending=True)
     ).drop(pl.col('bern'))
 
@@ -284,14 +287,22 @@ def _(
         models = pickle.load(open('model_v1/model1.pkl', 'rb'))                                                      
 
 
+    last_dates = df_ml.group_by("unique_id").agg(pl.col("ds").max().alias("last_ds"))
+
     X_df = (                                                                                                         
         df_final                                                                                                     
-        .filter(pl.col('timestamp') > newest_occupancy)                                                              
         .unpivot(index=["timestamp"] + COVARIATES)                                                                   
         .rename({"timestamp": "ds", "variable": "unique_id", "value": "y"})                                          
         .with_columns(pl.col("ds").dt.replace_time_zone(None))                                                       
         .drop('y')                                                                                                   
     )                                                                                                                
+
+    X_df = (
+        X_df
+        .join(last_dates, on="unique_id", how="left")
+        .filter(pl.col("ds") > pl.col("last_ds"))
+        .drop("last_ds")
+    )
 
     preds = []                                                                                                       
     for group in tqdm(X_df.partition_by("unique_id")):                                                                     
