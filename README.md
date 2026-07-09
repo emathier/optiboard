@@ -1,5 +1,7 @@
 # 🏊 Optiboard: Public Pool Occupancy Forecast Dashboard
 
+[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://optiboard.streamlit.app)
+
 Optiboard is a predictive modeling system and interactive dashboard designed to forecast public pool occupancy in Zurich and Bern. By scraping turnstile data and combining it with meteorological conditions, the system trains an autoregressive LightGBM model to predict visitor crowds up to 48 hours in advance, allowing swimmers to optimize their visits.
 
 ---
