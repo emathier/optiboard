@@ -7,14 +7,19 @@ import streamlit.components.v1 as components
 
 # Define your Google Analytics script
 ga_html = """
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-B8Q76KSZZY"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+<html>
+  <head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-B8Q76KSZZY"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
 
-  gtag('config', 'G-B8Q76KSZZY');
-</script>
+    gtag('config', 'G-B8Q76KSZZY');
+    </script>
+    </head>
+  <body></body>
+</html>
 """
 
 
