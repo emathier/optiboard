@@ -3,6 +3,20 @@ import polars as pl
 import plotly.graph_objects as go
 from logging_config import get_logger
 from datetime import datetime, timedelta
+import streamlit.components.v1 as components
+
+# Define your Google Analytics script
+ga_html = """
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-B8Q76KSZZY"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-B8Q76KSZZY');
+</script>
+"""
+
 
 # Page config
 st.set_page_config(
@@ -10,6 +24,9 @@ st.set_page_config(
     page_icon="🔮",
     layout="wide"
 )
+
+# Inject the script into the app (hidden from view)
+components.html(ga_html, height=0, width=0, unsafe_allow_javascript=True)
 
 # Custom CSS to remove top whitespace and make layout compact
 st.markdown("""
