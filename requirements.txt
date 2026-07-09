@@ -10,3 +10,4 @@ pandas
 plotly
 tqdm>=4.68.4,<5
 duckdb
+matplotlib
