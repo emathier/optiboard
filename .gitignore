@@ -5,3 +5,4 @@ __marimo__/*
 google-cloud-sdk/*
 .vscode/*
 __pycache__/*
+creds.json

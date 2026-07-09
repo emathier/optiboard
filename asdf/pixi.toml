@@ -1,0 +1,31 @@
+[workspace]
+authors = ["Etienne Mathier <etienne@mathier.ch>"]
+channels = ["conda-forge"]
+name = "optiboard"
+platforms = ["osx-arm64", "linux-64"]
+version = "0.1.0"
+
+[tasks]
+sl = "streamlit run streamlit/Hello.py"
+mlf = "cd /Users/etienne/optiboard/ml/mlflow; mlflow server"
+fetch-occupancy = "python scripts/fetchOccupancy.py"
+fetch-weather = "python scripts/fetchHistoricalWeather.py"
+interpolate-weather = "python scripts/interpolateWeather.py"
+
+# The master task that runs them sequentially
+refresh-data = { depends-on = ["fetch-occupancy", "fetch-weather", "interpolate-weather"] }
+
+[dependencies]
+numpy = "<2"
+scikit-learn = "*"
+matplotlib = "*"
+plotly = "*"
+polars = "*"
+duckdb = "*"
+shap = "*"
+ruff = ">=0.15.20,<0.16"
+seaborn = ">=0.13.2,<0.14"
+skforecast = ">=0.22.0,<0.23"
+mlforecast = ">=0.14.0,<0.15"
+lightgbm = ">=4.6.0,<5"
+pyarrow = ">=24.0.0,<25"

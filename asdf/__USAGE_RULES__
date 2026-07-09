@@ -1,0 +1,41 @@
+--------------------------------------------------------------------------------
+ U S A G E   R U L E S   F O R   P E R S O N A L   G L O B A L   S C R A T C H
+--------------------------------------------------------------------------------
+
+
+Your personal global scratch directory on Euler,  /cluster/scratch/username,
+can be used if you need more disk space than available in your home directory.
+You can store at most 2.5 TB in at most 1 million files. This storage system is
+optimized for large parallel HPC applications. The storage is non-permanent and
+is not backed up. As described below, older files are continuously removed.
+
+If you want to use it you MUST read and respect the following RULES:
+
+1)  Out of respect for other users in a shared environment, please CLEAN UP
+    your personal scratch directory and promptly remove the files that are
+    no longer needed for your computations.
+
+2)  Files older than 15 days will be automatically DELETED without prior
+    notice.
+
+3)  Any attempt to change the time stamp of files or directories to prevent
+    them from being purged automatically is subject to technical or
+    administrative action, up to and including removing your access to this
+    storage system or suspending your account.
+
+4)  The GLOBAL scratch file systems are optimized for LARGE data files.
+    If you are reading or writing many small files, or large files by small
+    in increments, you will achieve better performance by using a LOCAL
+    scratch file system or (space permitting) your home directory.
+
+5)  Like all work directories, global scratch file systems are NOT BACKED UP.
+    The safekeeping of your data is YOUR responsibility.
+
+--------------------------------------------------------------------------------
+By using the global scratch file systems of Euler, you are implicitly accepting
+these rules. People who do not respect these rules, or try to circumvent them,
+will face administrative actions such as the suspension of their Euler account.
+--------------------------------------------------------------------------------
+
+
+2014-10-29 / Cluster Support 

@@ -2,7 +2,7 @@
 authors = ["Etienne Mathier <etienne@mathier.ch>"]
 channels = ["conda-forge"]
 name = "optiboard"
-platforms = ["osx-arm64"]
+platforms = ["osx-arm64", "linux-64"]
 version = "0.1.0"
 
 [tasks]
@@ -40,3 +40,6 @@ openai = ">=2.44.0,<3"
 seaborn = ">=0.13.2,<0.14"
 skforecast = ">=0.22.0,<0.23"
 mlforecast = ">=0.14.0,<0.15"
+line_profiler = ">=5.0.2,<6"
+pyinstrument = ">=5.1.2,<6"
+optuna-dashboard = ">=0.20.0,<0.21"

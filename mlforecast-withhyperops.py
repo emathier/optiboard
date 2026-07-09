@@ -43,7 +43,7 @@ def _():
     ).upsample(
         time_column='ds', 
         every='5m', 
-        group_by='unique_id'  # <-- CRITICAL: Upsample each pool individually
+        group_by='unique_id' 
     ).fill_null(strategy='forward').drop_nans()
 
     max_date = df.select(pl.col('ds').max())[0,0]
@@ -69,6 +69,10 @@ def _(df_train, plot_series):
 
 @app.cell
 def _(MLForecast, df_train, lgb, plot_series):
+
+
+
+
     lgb_params = {
         'verbosity': -1,
         'num_leaves': 512,
@@ -190,7 +194,6 @@ def _(auto_preds, df_test, plot_series):
 @app.cell
 def _(auto_fcst):
     auto_fcst.models['avg']
-
     return
 
 
@@ -208,7 +211,7 @@ def _(auto_fcst):
     output_path = 'data-files/optimized_hyperparameters.json'
     with open(output_path, 'w') as f:
         json.dump(best_hyperparameters, f, indent=4, default=str)
-    
+
     print(f"Successfully saved tuned parameters to {output_path}!")
     return
 

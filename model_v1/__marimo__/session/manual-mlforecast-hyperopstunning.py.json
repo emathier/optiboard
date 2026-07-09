@@ -1,0 +1,365 @@
+{
+  "version": "1",
+  "metadata": {
+    "marimo_version": "0.23.11",
+    "script_metadata_hash": null
+  },
+  "cells": [
+    {
+      "id": "Hbol",
+      "code_hash": "400e06277edca9a6f5acecb70b568961",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/plain": ""
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "MJUe",
+      "code_hash": "ab48f8772d7890a548b058df80d89e71",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h1 id=\"optuna-stack-for-avg-predection\">Optuna Stack for avg predection.</h1>\n<span class=\"paragraph\">Try different</span></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "vblA",
+      "code_hash": "a1162cc9c5af1cf31264abaddf20d1b3",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/plain": ""
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "bkHC",
+      "code_hash": "51a13d0ddcd19275823062cb815dc49c",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/plain": ""
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "lEQa",
+      "code_hash": "48fc29d82875ad32d9e72be5f17bc0ce",
+      "outputs": [
+        {
+          "type": "error",
+          "ename": "exception",
+          "evalue": "This cell was interrupted and needs to be re-run",
+          "traceback": null
+        }
+      ],
+      "console": [
+        {
+          "type": "stream",
+          "name": "stderr",
+          "text": "[I 2026-07-06 14:29:59,243] A new study created in RDB with name: mlforecast_lgbm\n\r  0%|                                                                                          | 0/400 [00:00<?, ?it/s]Traceback (most recent call last):\n  File \"<string>\", line 1, in <module>\n  File \"/Users/etienne/optiboard/.pixi/envs/default/lib/python3.12/multiprocessing/spawn.py\", line 122, in spawn_main\n    exitcode = _main(fd, parent_sentinel)\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/etienne/optiboard/.pixi/envs/default/lib/python3.12/multiprocessing/spawn.py\", line 132, in _main\n    self = reduction.pickle.load(from_parent)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAttributeError: Can't get attribute 'objective' on <module '__mp_main__' from '/Users/etienne/optiboard/model_v1/manual-mlforecast-hyperopstunning.py'>\n\r                                                                                                                       \r",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "[I 2026-07-06 14:29:59,937] Trial 0 pruned. Trial process completed but returned no results.\n",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stderr",
+          "text": "\r  0%|                                                                                          | 0/400 [00:00<?, ?it/s]\r  0%|\u258f                                                                                 | 1/400 [00:00<04:37,  1.44it/s]Traceback (most recent call last):\n  File \"<string>\", line 1, in <module>\n  File \"/Users/etienne/optiboard/.pixi/envs/default/lib/python3.12/multiprocessing/spawn.py\", line 122, in spawn_main\n    exitcode = _main(fd, parent_sentinel)\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/etienne/optiboard/.pixi/envs/default/lib/python3.12/multiprocessing/spawn.py\", line 132, in _main\n    self = reduction.pickle.load(from_parent)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAttributeError: Can't get attribute 'objective' on <module '__mp_main__' from '/Users/etienne/optiboard/model_v1/manual-mlforecast-hyperopstunning.py'>\n\r                                                                                                                       \r",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "[I 2026-07-06 14:30:00,611] Trial 1 pruned. Trial process completed but returned no results.\n",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stderr",
+          "text": "\r  0%|\u258f                                                                                 | 1/400 [00:01<04:37,  1.44it/s]\r  0%|\u258d                                                                                 | 2/400 [00:01<04:31,  1.47it/s]Traceback (most recent call last):\n  File \"<string>\", line 1, in <module>\n  File \"/Users/etienne/optiboard/.pixi/envs/default/lib/python3.12/multiprocessing/spawn.py\", line 122, in spawn_main\n    exitcode = _main(fd, parent_sentinel)\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/etienne/optiboard/.pixi/envs/default/lib/python3.12/multiprocessing/spawn.py\", line 132, in _main\n    self = reduction.pickle.load(from_parent)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAttributeError: Can't get attribute 'objective' on <module '__mp_main__' from '/Users/etienne/optiboard/model_v1/manual-mlforecast-hyperopstunning.py'>\n\r                                                                                                                       \r",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "[I 2026-07-06 14:30:01,151] Trial 2 pruned. Trial process completed but returned no results.\n",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stderr",
+          "text": "\r  0%|\u258d                                                                                 | 2/400 [00:01<04:31,  1.47it/s]\r  1%|\u258c                                                                                 | 3/400 [00:01<04:05,  1.62it/s]Traceback (most recent call last):\n  File \"<string>\", line 1, in <module>\n  File \"/Users/etienne/optiboard/.pixi/envs/default/lib/python3.12/multiprocessing/spawn.py\", line 122, in spawn_main\n    exitcode = _main(fd, parent_sentinel)\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/etienne/optiboard/.pixi/envs/default/lib/python3.12/multiprocessing/spawn.py\", line 132, in _main\n    self = reduction.pickle.load(from_parent)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAttributeError: Can't get attribute 'objective' on <module '__mp_main__' from '/Users/etienne/optiboard/model_v1/manual-mlforecast-hyperopstunning.py'>\n\r                                                                                                                       \r",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "[I 2026-07-06 14:30:01,666] Trial 3 pruned. Trial process completed but returned no results.\n",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stderr",
+          "text": "\r  1%|\u258c                                                                                 | 3/400 [00:02<04:05,  1.62it/s]\r  1%|\u258a                                                                                 | 4/400 [00:02<03:48,  1.73it/s]Traceback (most recent call last):\n  File \"<string>\", line 1, in <module>\n  File \"/Users/etienne/optiboard/.pixi/envs/default/lib/python3.12/multiprocessing/spawn.py\", line 122, in spawn_main\n    exitcode = _main(fd, parent_sentinel)\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/etienne/optiboard/.pixi/envs/default/lib/python3.12/multiprocessing/spawn.py\", line 132, in _main\n    self = reduction.pickle.load(from_parent)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAttributeError: Can't get attribute 'objective' on <module '__mp_main__' from '/Users/etienne/optiboard/model_v1/manual-mlforecast-hyperopstunning.py'>\n\r                                                                                                                       \r",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "[I 2026-07-06 14:30:02,169] Trial 4 pruned. Trial process completed but returned no results.\n",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stderr",
+          "text": "\r  1%|\u258a                                                                                 | 4/400 [00:02<03:48,  1.73it/s]\r  1%|\u2588                                                                                 | 5/400 [00:02<03:37,  1.82it/s]Traceback (most recent call last):\n  File \"<string>\", line 1, in <module>\n  File \"/Users/etienne/optiboard/.pixi/envs/default/lib/python3.12/multiprocessing/spawn.py\", line 122, in spawn_main\n    exitcode = _main(fd, parent_sentinel)\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/etienne/optiboard/.pixi/envs/default/lib/python3.12/multiprocessing/spawn.py\", line 132, in _main\n    self = reduction.pickle.load(from_parent)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAttributeError: Can't get attribute 'objective' on <module '__mp_main__' from '/Users/etienne/optiboard/model_v1/manual-mlforecast-hyperopstunning.py'>\n\r                                                                                                                       \r",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "[I 2026-07-06 14:30:02,669] Trial 5 pruned. Trial process completed but returned no results.\n",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stderr",
+          "text": "\r  1%|\u2588                                                                                 | 5/400 [00:03<03:37,  1.82it/s]\r  2%|\u2588\u258f                                                                                | 6/400 [00:03<03:29,  1.88it/s]Traceback (most recent call last):\n  File \"<string>\", line 1, in <module>\n  File \"/Users/etienne/optiboard/.pixi/envs/default/lib/python3.12/multiprocessing/spawn.py\", line 122, in spawn_main\n    exitcode = _main(fd, parent_sentinel)\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/etienne/optiboard/.pixi/envs/default/lib/python3.12/multiprocessing/spawn.py\", line 132, in _main\n    self = reduction.pickle.load(from_parent)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAttributeError: Can't get attribute 'objective' on <module '__mp_main__' from '/Users/etienne/optiboard/model_v1/manual-mlforecast-hyperopstunning.py'>\n\r                                                                                                                       \r",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "[I 2026-07-06 14:30:03,176] Trial 6 pruned. Trial process completed but returned no results.\n",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stderr",
+          "text": "\r  2%|\u2588\u258f                                                                                | 6/400 [00:03<03:29,  1.88it/s]\r  2%|\u2588\u258d                                                                                | 7/400 [00:03<03:26,  1.91it/s]Traceback (most recent call last):\n  File \"<string>\", line 1, in <module>\n  File \"/Users/etienne/optiboard/.pixi/envs/default/lib/python3.12/multiprocessing/spawn.py\", line 122, in spawn_main\n    exitcode = _main(fd, parent_sentinel)\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/etienne/optiboard/.pixi/envs/default/lib/python3.12/multiprocessing/spawn.py\", line 132, in _main\n    self = reduction.pickle.load(from_parent)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAttributeError: Can't get attribute 'objective' on <module '__mp_main__' from '/Users/etienne/optiboard/model_v1/manual-mlforecast-hyperopstunning.py'>\n\r                                                                                                                       \r",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "[I 2026-07-06 14:30:03,703] Trial 7 pruned. Trial process completed but returned no results.\n",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stderr",
+          "text": "\r  2%|\u2588\u258d                                                                                | 7/400 [00:04<03:26,  1.91it/s]\r  2%|\u2588\u258b                                                                                | 8/400 [00:04<03:25,  1.90it/s]Traceback (most recent call last):\n  File \"<string>\", line 1, in <module>\n  File \"/Users/etienne/optiboard/.pixi/envs/default/lib/python3.12/multiprocessing/spawn.py\", line 122, in spawn_main\n    exitcode = _main(fd, parent_sentinel)\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/etienne/optiboard/.pixi/envs/default/lib/python3.12/multiprocessing/spawn.py\", line 132, in _main\n    self = reduction.pickle.load(from_parent)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAttributeError: Can't get attribute 'objective' on <module '__mp_main__' from '/Users/etienne/optiboard/model_v1/manual-mlforecast-hyperopstunning.py'>\n\r                                                                                                                       \r",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "[I 2026-07-06 14:30:04,203] Trial 8 pruned. Trial process completed but returned no results.\n",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stderr",
+          "text": "\r  2%|\u2588\u258b                                                                                | 8/400 [00:04<03:25,  1.90it/s]\r  2%|\u2588\u258a                                                                                | 9/400 [00:04<03:22,  1.93it/s]Traceback (most recent call last):\n  File \"<string>\", line 1, in <module>\n  File \"/Users/etienne/optiboard/.pixi/envs/default/lib/python3.12/multiprocessing/spawn.py\", line 122, in spawn_main\n    exitcode = _main(fd, parent_sentinel)\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/etienne/optiboard/.pixi/envs/default/lib/python3.12/multiprocessing/spawn.py\", line 132, in _main\n    self = reduction.pickle.load(from_parent)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAttributeError: Can't get attribute 'objective' on <module '__mp_main__' from '/Users/etienne/optiboard/model_v1/manual-mlforecast-hyperopstunning.py'>\n\r                                                                                                                       \r",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "[I 2026-07-06 14:30:04,706] Trial 9 pruned. Trial process completed but returned no results.\n",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stderr",
+          "text": "\r  2%|\u2588\u258a                                                                                | 9/400 [00:05<03:22,  1.93it/s]\r  2%|\u2588\u2588                                                                               | 10/400 [00:05<03:20,  1.95it/s]Traceback (most recent call last):\n  File \"<string>\", line 1, in <module>\n  File \"/Users/etienne/optiboard/.pixi/envs/default/lib/python3.12/multiprocessing/spawn.py\", line 122, in spawn_main\n    exitcode = _main(fd, parent_sentinel)\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/etienne/optiboard/.pixi/envs/default/lib/python3.12/multiprocessing/spawn.py\", line 132, in _main\n    self = reduction.pickle.load(from_parent)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAttributeError: Can't get attribute 'objective' on <module '__mp_main__' from '/Users/etienne/optiboard/model_v1/manual-mlforecast-hyperopstunning.py'>\n\r                                                                                                                       \r",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "[I 2026-07-06 14:30:05,208] Trial 10 pruned. Trial process completed but returned no results.\n",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stderr",
+          "text": "\r  2%|\u2588\u2588                                                                               | 10/400 [00:05<03:20,  1.95it/s]\r  3%|\u2588\u2588\u258f                                                                              | 11/400 [00:05<03:18,  1.96it/s]Traceback (most recent call last):\n  File \"<string>\", line 1, in <module>\n  File \"/Users/etienne/optiboard/.pixi/envs/default/lib/python3.12/multiprocessing/spawn.py\", line 122, in spawn_main\n    exitcode = _main(fd, parent_sentinel)\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/etienne/optiboard/.pixi/envs/default/lib/python3.12/multiprocessing/spawn.py\", line 132, in _main\n    self = reduction.pickle.load(from_parent)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAttributeError: Can't get attribute 'objective' on <module '__mp_main__' from '/Users/etienne/optiboard/model_v1/manual-mlforecast-hyperopstunning.py'>\n\r                                                                                                                       \r",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "[I 2026-07-06 14:30:05,753] Trial 11 pruned. Trial process completed but returned no results.\n",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stderr",
+          "text": "\r  3%|\u2588\u2588\u258f                                                                              | 11/400 [00:06<03:18,  1.96it/s]\r  3%|\u2588\u2588\u258d                                                                              | 12/400 [00:06<03:21,  1.92it/s]Traceback (most recent call last):\n  File \"<string>\", line 1, in <module>\n  File \"/Users/etienne/optiboard/.pixi/envs/default/lib/python3.12/multiprocessing/spawn.py\", line 122, in spawn_main\n    exitcode = _main(fd, parent_sentinel)\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/etienne/optiboard/.pixi/envs/default/lib/python3.12/multiprocessing/spawn.py\", line 132, in _main\n    self = reduction.pickle.load(from_parent)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAttributeError: Can't get attribute 'objective' on <module '__mp_main__' from '/Users/etienne/optiboard/model_v1/manual-mlforecast-hyperopstunning.py'>\n\r                                                                                                                       \r",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "[I 2026-07-06 14:30:06,272] Trial 12 pruned. Trial process completed but returned no results.\n",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stderr",
+          "text": "\r  3%|\u2588\u2588\u258d                                                                              | 12/400 [00:07<03:21,  1.92it/s]\r  3%|\u2588\u2588\u258b                                                                              | 13/400 [00:07<03:21,  1.92it/s]Traceback (most recent call last):\n  File \"<string>\", line 1, in <module>\n  File \"/Users/etienne/optiboard/.pixi/envs/default/lib/python3.12/multiprocessing/spawn.py\", line 122, in spawn_main\n    exitcode = _main(fd, parent_sentinel)\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/etienne/optiboard/.pixi/envs/default/lib/python3.12/multiprocessing/spawn.py\", line 132, in _main\n    self = reduction.pickle.load(from_parent)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAttributeError: Can't get attribute 'objective' on <module '__mp_main__' from '/Users/etienne/optiboard/model_v1/manual-mlforecast-hyperopstunning.py'>\n\r                                                                                                                       \r",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "[I 2026-07-06 14:30:06,780] Trial 13 pruned. Trial process completed but returned no results.\n",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stderr",
+          "text": "\r  3%|\u2588\u2588\u258b                                                                              | 13/400 [00:07<03:21,  1.92it/s]\r  4%|\u2588\u2588\u258a                                                                              | 14/400 [00:07<03:19,  1.94it/s]Traceback (most recent call last):\n  File \"<string>\", line 1, in <module>\n  File \"/Users/etienne/optiboard/.pixi/envs/default/lib/python3.12/multiprocessing/spawn.py\", line 122, in spawn_main\n    exitcode = _main(fd, parent_sentinel)\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/etienne/optiboard/.pixi/envs/default/lib/python3.12/multiprocessing/spawn.py\", line 132, in _main\n    self = reduction.pickle.load(from_parent)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAttributeError: Can't get attribute 'objective' on <module '__mp_main__' from '/Users/etienne/optiboard/model_v1/manual-mlforecast-hyperopstunning.py'>\n\r                                                                                                                       \r",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "[I 2026-07-06 14:30:07,290] Trial 14 pruned. Trial process completed but returned no results.\n",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stderr",
+          "text": "\r  4%|\u2588\u2588\u258a                                                                              | 14/400 [00:08<03:19,  1.94it/s]\r  4%|\u2588\u2588\u2588                                                                              | 15/400 [00:08<03:18,  1.94it/s]Traceback (most recent call last):\n  File \"<string>\", line 1, in <module>\n  File \"/Users/etienne/optiboard/.pixi/envs/default/lib/python3.12/multiprocessing/spawn.py\", line 122, in spawn_main\n    exitcode = _main(fd, parent_sentinel)\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/etienne/optiboard/.pixi/envs/default/lib/python3.12/multiprocessing/spawn.py\", line 132, in _main\n    self = reduction.pickle.load(from_parent)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAttributeError: Can't get attribute 'objective' on <module '__mp_main__' from '/Users/etienne/optiboard/model_v1/manual-mlforecast-hyperopstunning.py'>\n\r                                                                                                                       \r",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "[I 2026-07-06 14:30:07,840] Trial 15 pruned. Trial process completed but returned no results.\n",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stderr",
+          "text": "\r  4%|\u2588\u2588\u2588                                                                              | 15/400 [00:08<03:18,  1.94it/s]\r  4%|\u2588\u2588\u2588\u258f                                                                             | 16/400 [00:08<03:21,  1.90it/s]Traceback (most recent call last):\n  File \"<string>\", line 1, in <module>\n  File \"/Users/etienne/optiboard/.pixi/envs/default/lib/python3.12/multiprocessing/spawn.py\", line 122, in spawn_main\n    exitcode = _main(fd, parent_sentinel)\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/etienne/optiboard/.pixi/envs/default/lib/python3.12/multiprocessing/spawn.py\", line 132, in _main\n    self = reduction.pickle.load(from_parent)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAttributeError: Can't get attribute 'objective' on <module '__mp_main__' from '/Users/etienne/optiboard/model_v1/manual-mlforecast-hyperopstunning.py'>\n\r                                                                                                                       \r",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "[I 2026-07-06 14:30:08,386] Trial 16 pruned. Trial process completed but returned no results.\n",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stderr",
+          "text": "\r  4%|\u2588\u2588\u2588\u258f                                                                             | 16/400 [00:09<03:21,  1.90it/s]\r  4%|\u2588\u2588\u2588\u258d                                                                             | 17/400 [00:09<03:23,  1.88it/s]Traceback (most recent call last):\n  File \"<string>\", line 1, in <module>\n  File \"/Users/etienne/optiboard/.pixi/envs/default/lib/python3.12/multiprocessing/spawn.py\", line 122, in spawn_main\n    exitcode = _main(fd, parent_sentinel)\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/etienne/optiboard/.pixi/envs/default/lib/python3.12/multiprocessing/spawn.py\", line 132, in _main\n    self = reduction.pickle.load(from_parent)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAttributeError: Can't get attribute 'objective' on <module '__mp_main__' from '/Users/etienne/optiboard/model_v1/manual-mlforecast-hyperopstunning.py'>\n\r                                                                                                                       \r",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "[W 2026-07-06 14:30:08,909] Trial 17 failed with parameters: {} because of the following error: KeyboardInterrupt().\nTraceback (most recent call last):\n  File \"/Users/etienne/optiboard/.pixi/envs/default/lib/python3.12/site-packages/optuna/study/_optimize.py\", line 206, in _run_trial\n    value_or_values = func(trial)\n                      ^^^^^^^^^^^\n  File \"/var/folders/76/q77z1d8j3890m93nm8s18zb00000gn/T/marimo_53735/__marimo__cell_bkHC_.py\", line 10, in objective_with_timout\n    p1.join(timeout=10.0)\n  File \"/Users/etienne/optiboard/.pixi/envs/default/lib/python3.12/multiprocessing/process.py\", line 149, in join\n    res = self._popen.wait(timeout)\n          ^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/etienne/optiboard/.pixi/envs/default/lib/python3.12/multiprocessing/popen_fork.py\", line 40, in wait\n    if not wait([self.sentinel], timeout):\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/etienne/optiboard/.pixi/envs/default/lib/python3.12/multiprocessing/connection.py\", line 1136, in wait\n    ready = selector.select(timeout)\n            ^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/etienne/optiboard/.pixi/envs/default/lib/python3.12/selectors.py\", line 415, in select\n    fd_event_list = self._selector.poll(timeout)\n                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/etienne/optiboard/.pixi/envs/default/lib/python3.12/site-packages/marimo/_runtime/handlers.py\", line 72, in interrupt_handler\n    raise MarimoInterrupt\nKeyboardInterrupt\n",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stderr",
+          "text": "\r  4%|\u2588\u2588\u2588\u258d                                                                             | 17/400 [00:09<03:23,  1.88it/s]\r                                                                                                                       \r",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "[W 2026-07-06 14:30:08,913] Trial 17 failed with value None.\n",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stderr",
+          "text": "\r  4%|\u2588\u2588\u2588\u258d                                                                             | 17/400 [00:09<03:23,  1.88it/s]\r  4%|\u2588\u2588\u2588\u258d                                                                             | 17/400 [00:09<03:37,  1.76it/s]\n",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stderr",
+          "text": "<span class=\"codehilite\"><div class=\"highlight\"><pre><span></span><span class=\"gt\">Traceback (most recent call last):</span>\n  File <span class=\"nb\">&quot;/var/folders/76/q77z1d8j3890m93nm8s18zb00000gn/T/marimo_53735/__marimo__cell_lEQa_.py&quot;</span>, line <span class=\"m\">17</span>, in <span class=\"n\">&lt;module&gt;</span>\n<span class=\"w\">    </span><span class=\"n\">study</span><span class=\"o\">.</span><span class=\"n\">optimize</span><span class=\"p\">(</span>\n  File <span class=\"nb\">&quot;/Users/etienne/optiboard/.pixi/envs/default/lib/python3.12/site-packages/optuna/study/study.py&quot;</span>, line <span class=\"m\">516</span>, in <span class=\"n\">optimize</span>\n<span class=\"w\">    </span><span class=\"n\">_optimize</span><span class=\"p\">(</span>\n  File <span class=\"nb\">&quot;/Users/etienne/optiboard/.pixi/envs/default/lib/python3.12/site-packages/optuna/study/_optimize.py&quot;</span>, line <span class=\"m\">68</span>, in <span class=\"n\">_optimize</span>\n<span class=\"w\">    </span><span class=\"n\">_optimize_sequential</span><span class=\"p\">(</span>\n  File <span class=\"nb\">&quot;/Users/etienne/optiboard/.pixi/envs/default/lib/python3.12/site-packages/optuna/study/_optimize.py&quot;</span>, line <span class=\"m\">165</span>, in <span class=\"n\">_optimize_sequential</span>\n<span class=\"w\">    </span><span class=\"n\">frozen_trial_id</span> <span class=\"o\">=</span> <span class=\"n\">_run_trial</span><span class=\"p\">(</span><span class=\"n\">study</span><span class=\"p\">,</span> <span class=\"n\">func</span><span class=\"p\">,</span> <span class=\"n\">catch</span><span class=\"p\">)</span>\n<span class=\"w\">                      </span><span class=\"pm\">^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^</span>\n  File <span class=\"nb\">&quot;/Users/etienne/optiboard/.pixi/envs/default/lib/python3.12/site-packages/optuna/study/_optimize.py&quot;</span>, line <span class=\"m\">263</span>, in <span class=\"n\">_run_trial</span>\n<span class=\"w\">    </span><span class=\"k\">raise</span> <span class=\"n\">func_err</span>\n  File <span class=\"nb\">&quot;/Users/etienne/optiboard/.pixi/envs/default/lib/python3.12/site-packages/optuna/study/_optimize.py&quot;</span>, line <span class=\"m\">206</span>, in <span class=\"n\">_run_trial</span>\n<span class=\"w\">    </span><span class=\"n\">value_or_values</span> <span class=\"o\">=</span> <span class=\"n\">func</span><span class=\"p\">(</span><span class=\"n\">trial</span><span class=\"p\">)</span>\n<span class=\"w\">                      </span><span class=\"pm\">^^^^^^^^^^^</span>\n  File <span class=\"nb\">&quot;/var/folders/76/q77z1d8j3890m93nm8s18zb00000gn/T/marimo_53735/__marimo__cell_bkHC_.py&quot;</span>, line <span class=\"m\">10</span>, in <span class=\"n\">objective_with_timout</span>\n<span class=\"w\">    </span><span class=\"n\">p1</span><span class=\"o\">.</span><span class=\"n\">join</span><span class=\"p\">(</span><span class=\"n\">timeout</span><span class=\"o\">=</span><span class=\"mf\">10.0</span><span class=\"p\">)</span>\n  File <span class=\"nb\">&quot;/Users/etienne/optiboard/.pixi/envs/default/lib/python3.12/multiprocessing/process.py&quot;</span>, line <span class=\"m\">149</span>, in <span class=\"n\">join</span>\n<span class=\"w\">    </span><span class=\"n\">res</span> <span class=\"o\">=</span> <span class=\"bp\">self</span><span class=\"o\">.</span><span class=\"n\">_popen</span><span class=\"o\">.</span><span class=\"n\">wait</span><span class=\"p\">(</span><span class=\"n\">timeout</span><span class=\"p\">)</span>\n<span class=\"w\">          </span><span class=\"pm\">^^^^^^^^^^^^^^^^^^^^^^^^^</span>\n  File <span class=\"nb\">&quot;/Users/etienne/optiboard/.pixi/envs/default/lib/python3.12/multiprocessing/popen_fork.py&quot;</span>, line <span class=\"m\">40</span>, in <span class=\"n\">wait</span>\n<span class=\"w\">    </span><span class=\"k\">if</span> <span class=\"ow\">not</span> <span class=\"n\">wait</span><span class=\"p\">([</span><span class=\"bp\">self</span><span class=\"o\">.</span><span class=\"n\">sentinel</span><span class=\"p\">],</span> <span class=\"n\">timeout</span><span class=\"p\">):</span>\n<span class=\"w\">           </span><span class=\"pm\">^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^</span>\n  File <span class=\"nb\">&quot;/Users/etienne/optiboard/.pixi/envs/default/lib/python3.12/multiprocessing/connection.py&quot;</span>, line <span class=\"m\">1136</span>, in <span class=\"n\">wait</span>\n<span class=\"w\">    </span><span class=\"n\">ready</span> <span class=\"o\">=</span> <span class=\"n\">selector</span><span class=\"o\">.</span><span class=\"n\">select</span><span class=\"p\">(</span><span class=\"n\">timeout</span><span class=\"p\">)</span>\n<span class=\"w\">            </span><span class=\"pm\">^^^^^^^^^^^^^^^^^^^^^^^^</span>\n  File <span class=\"nb\">&quot;/Users/etienne/optiboard/.pixi/envs/default/lib/python3.12/selectors.py&quot;</span>, line <span class=\"m\">415</span>, in <span class=\"n\">select</span>\n<span class=\"w\">    </span><span class=\"n\">fd_event_list</span> <span class=\"o\">=</span> <span class=\"bp\">self</span><span class=\"o\">.</span><span class=\"n\">_selector</span><span class=\"o\">.</span><span class=\"n\">poll</span><span class=\"p\">(</span><span class=\"n\">timeout</span><span class=\"p\">)</span>\n<span class=\"w\">                    </span><span class=\"pm\">^^^^^^^^^^^^^^^^^^^^^^^^^^^^</span>\n  File <span class=\"nb\">&quot;/Users/etienne/optiboard/.pixi/envs/default/lib/python3.12/site-packages/marimo/_runtime/handlers.py&quot;</span>, line <span class=\"m\">72</span>, in <span class=\"n\">interrupt_handler</span>\n<span class=\"w\">    </span><span class=\"k\">raise</span> <span class=\"n\">MarimoInterrupt</span>\n<span class=\"gr\">KeyboardInterrupt</span>\n</pre></div>\n</span>",
+          "mimetype": "application/vnd.marimo+traceback"
+        }
+      ]
+    },
+    {
+      "id": "PKri",
+      "code_hash": "f72e54d5716a5efc1f8aacbe678223f1",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><span class=\"paragraph\">lgb_params = {\n    'verbosity': -1,\n    'num_leaves': 50,\n    'n_jobs' : 4\n}</span>\n<span class=\"paragraph\">fcst = MLForecast(\n    models={\n        'avg': lgb.LGBMRegressor(<strong>lgb_params, objective='quantile', alpha=0.5),\n        'q75': lgb.LGBMRegressor(</strong>lgb_params, objective='quantile', alpha=0.75),\n        'q25': lgb.LGBMRegressor(<em><em>lgb_params, objective='quantile', alpha=0.25),\n    },\n    freq='5min',  # our series have integer timestamps, so we'll just add 1 in every timestep\n    target_transforms=[],\n    lags=[1,12,24</em>12, 24</em>12],\n    date_features=[decimal_hour, 'weekday','dayofyear'],</span>\n<span class=\"paragraph\">)</span>\n<span class=\"paragraph\">cv_df = fcst.cross_validation(\n    df=df_train,\n    h=24*12,\n    n_windows=3,\n    static_features=[]\n)</span>\n<span class=\"paragraph\">cv_results = evaluate(\n    cv_df.drop(columns='cutoff'),\n    metrics=[rmse,mape],\n    agg_fn='mean',\n)</span></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "Xref",
+      "code_hash": "78e3255a4d9b6062562b23c6b873fdfd",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "SFPL",
+      "code_hash": "d3056c3735d3e1e9f21faa7c021d5c22",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "BYtC",
+      "code_hash": null,
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "RGSE",
+      "code_hash": "726647dec33cbada4a8e3d9bf7e09198",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h1 id=\"rmse-prediction-best\">RMSE prediction best.</h1>\n<span class=\"paragraph\">{\n  \"max_depth\": 5,\n  \"num_leaves\": 1527,\n  \"min_child_samples\": 72,\n  \"learning_rate\": 0.07218777418692918,\n  \"n_estimators\": 1002,\n  \"subsample\": 0.6451303292416953,\n  \"colsample_bytree\": 0.9108368933561712,\n  \"reg_alpha\": 1.1812973236692408e-07,\n  \"reg_lambda\": 0.6058357708882873\n}</span></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "Kclp",
+      "code_hash": "5f647676ef259ee997606b859b3d13c1",
+      "outputs": [],
+      "console": []
+    }
+  ]
+}
