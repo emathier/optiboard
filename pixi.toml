@@ -6,7 +6,7 @@ platforms = ["osx-arm64", "linux-64"]
 version = "0.1.0"
 
 [tasks]
-sl = "streamlit run streamlit/Hello.py"
+sl = "streamlit run streamlit/Predictions.py"
 mlf = "cd /Users/etienne/optiboard/ml/mlflow; mlflow server"
 fetch-occupancy = "python scripts/fetchOccupancy.py"
 fetch-weather = "python scripts/fetchHistoricalWeather.py"
@@ -43,3 +43,4 @@ mlforecast = ">=0.14.0,<0.15"
 line_profiler = ">=5.0.2,<6"
 pyinstrument = ">=5.1.2,<6"
 optuna-dashboard = ">=0.20.0,<0.21"
+tqdm = ">=4.68.4,<5"

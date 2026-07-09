@@ -18,6 +18,7 @@ def _():
     import seaborn as sns
     import pickle
     from datetime import date
+    from tqdm import tqdm
 
     COVARIATES = [
         "cloud_cover",
@@ -44,6 +45,7 @@ def _():
         pickle,
         pl,
         requests,
+        tqdm,
     )
 
 
@@ -186,7 +188,7 @@ def _(df_occupancy_weather, newest_occupancy, pl, requests):
         df_combined
         .unique(subset=["timestamp"], keep="first") # Keeps historical over forecast if they overlap
         .sort("timestamp", descending=True)
-    )
+    ).drop(pl.col('bern'))
 
     df_final.write_parquet('data-files/occupancy-weather-forecast.parquet')
     return (df_final,)
@@ -205,6 +207,8 @@ def _(mo):
 def _(mo):
     avg_params = {'objective': 'regression',"metric": "rmse",'max_depth': 6, 'num_leaves': 64, 'min_child_samples': 81, 'learning_rate': 0.1461850400837278, 'n_estimators': 48, 'subsample': 0.6187186502554506, 'colsample_bytree': 0.7418257791996054, 'reg_alpha': 18.37278169756974, 'reg_lambda': 2.9154791826478093e-05,"n_jobs": 3, 'force_row_wise':'true', 'verbosity' : -1}
 
+    {'max_depth': 2, 'num_leaves': 163, 'min_child_samples': 30, 'learning_rate': 0.021135965397203384, 'n_estimators': 165, 'subsample': 0.5428985486414801, 'colsample_bytree': 0.5756412458091791, 'reg_alpha': 9.155344596868722e-11, 'reg_lambda': 3.028557596317042e-05}
+
     q25_params = {"objective": "quantile","alpha": 0.25,'max_depth': 9, 'num_leaves': 512, 'min_child_samples': 88, 'learning_rate': 0.07389856738099874, 'n_estimators': 84, 'subsample': 0.9333086686035081, 'colsample_bytree': 0.5090952964299004, 'reg_alpha': 0.017336162465283883, 'reg_lambda': 0.0019493228509678015, "n_jobs": 3, 'force_row_wise':'true', 'verbosity' : -1}
 
     q75_params = {"objective": "quantile","alpha": 0.75,'max_depth': 6, 'num_leaves': 64, 'min_child_samples': 62, 'learning_rate': 0.023925349245515218, 'n_estimators': 243, 'subsample': 0.5512803618937144, 'colsample_bytree': 0.5271164964005131, 'reg_alpha': 1.322055949009689e-08, 'reg_lambda': 1.012740564311525e-06, "n_jobs": 3, 'force_row_wise':'true', 'verbosity' : -1}
@@ -221,15 +225,16 @@ def _(
     avg_params,
     df_final,
     lgb,
+    newest_occupancy,
     pickle,
     pl,
     q25_params,
     q75_params,
+    tqdm,
 ):
     df_ml = (
         df_final
         .unpivot(index=["timestamp"] + COVARIATES)
-        .filter(pl.col("variable").is_in(["hallenbad_oerlikon"]))
         .rename({"timestamp": "ds", "variable": "unique_id", "value": "y"})
         .drop_nulls()
         .with_columns(pl.col("ds").dt.replace_time_zone(None))
@@ -248,62 +253,77 @@ def _(
         dt = dates.dt if hasattr(dates, "dt") else dates
         return dt.hour + dt.minute / 60.0 + dt.second / 3600.0
 
-    if RETRAIN_MODEL:
-        fcst = MLForecast(
-            models={'rmse' : lgb.LGBMRegressor(**avg_params),
-                   'q25' : lgb.LGBMRegressor(**q25_params),
-                   'q75' : lgb.LGBMRegressor(**q75_params)},
-            freq="5min",
-            target_transforms=[],
-            lags=[1, 12, 24 * 12],
-            date_features=[decimal_hour, "weekday", "day_of_year"],
-        )
+    if RETRAIN_MODEL:                                                                                                
+        models = {}                                                                                                  
+        for group in tqdm(df_ml.partition_by("unique_id")):                                                                
+            uid = group["unique_id"][0]                                                                              
+            fcst = MLForecast(                                                                                       
+                models={'rmse' : lgb.LGBMRegressor(**avg_params),                                                    
+                       'q25' : lgb.LGBMRegressor(**q25_params),                                                      
+                       'q75' : lgb.LGBMRegressor(**q75_params)},                                                     
+                freq="5min",                                                                                         
+                target_transforms=[],                                                                                
+                lags=[1, 12, 24 * 12],                                                                               
+                date_features=[decimal_hour, "weekday", "day_of_year"],                                              
+            )                                                                                                        
+            fcst.fit(group.to_pandas(), static_features=[])                                                          
+            models[uid] = fcst                                                                                       
 
-        fcst.fit(df_ml.to_pandas(), static_features=[])
+        pickle.dump(models, open("model_v1/model1.pkl", "wb"))                                                       
+    else:                                                                                                            
+        models = pickle.load(open('model_v1/model1.pkl', 'rb'))                                                      
 
-        pickle.dump(fcst, open("model_v1/model1.pkl", "wb"))
-    else: 
-        fcst = pickle.load(open('model_v1/model1.pkl', 'rb'))
-    
-    return (fcst,)
+
+    X_df = (                                                                                                         
+        df_final                                                                                                     
+        .filter(pl.col('timestamp') > newest_occupancy)                                                              
+        .unpivot(index=["timestamp"] + COVARIATES)                                                                   
+        .rename({"timestamp": "ds", "variable": "unique_id", "value": "y"})                                          
+        .with_columns(pl.col("ds").dt.replace_time_zone(None))                                                       
+        .drop('y')                                                                                                   
+    )                                                                                                                
+
+    preds = []                                                                                                       
+    for group in tqdm(X_df.partition_by("unique_id")):                                                                     
+        uid = group["unique_id"][0]                                                                                  
+        if uid in models:                                                                                            
+            preds.append(                                                                                            
+                pl.from_pandas(models[uid].predict(h=48 * 12, X_df=group.to_pandas()))                               
+            )                                                                                                        
+
+    pred = pl.concat(preds).rename({'ds' : 'timestamp'}).with_columns(                                               
+        pl.col('timestamp').dt.replace_time_zone('Europe/Zurich')                                                    
+    )                                                                                                                
+
+    product = df_final.join(pred.pivot(index='timestamp', on='unique_id'), on='timestamp', how='left')               
+    product.write_parquet('data-files/inference.parquet')    
+    return (product,)
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(r"""
+    # Plotting
+    """)
+    return
 
 
 @app.cell
-def _(COVARIATES, df_final, fcst, newest_occupancy, pl):
-    X_df = (
-        df_final
-        .filter(pl.col('timestamp') > newest_occupancy)
-        .unpivot(index=["timestamp"] + COVARIATES)
-        .filter(pl.col("variable").is_in(["hallenbad_oerlikon"]))
-        .rename({"timestamp": "ds", "variable": "unique_id", "value": "y"})
-        .with_columns(pl.col("ds").dt.replace_time_zone(None))
-        .drop('y')
-    )
-
-    pred = pl.from_pandas(fcst.predict(h =48 * 12, X_df= X_df.to_pandas())).rename({'ds' : 'timestamp'}).with_columns(
-        pl.col('timestamp').dt.replace_time_zone('Europe/Zurich')
-    )
-
-    df_pred = df_final.join(pred, how='left', on='timestamp')
-    return (df_pred,)
-
-
-@app.cell
-def _(date, df_pred, go, pl):
+def _(date, go, pl, product):
 
 
     # Pivot back to wide format to handle shading easily
-    df_w = df_pred.sort(
+    df_w = product.sort(
         "timestamp"
     ).filter(pl.col('timestamp') > date.today())
 
     fig = go.Figure(
         [
             # Shading bounds
-            go.Scatter(x=df_w["timestamp"], y=df_w["q25"], line_width=0, showlegend=False),
+            go.Scatter(x=df_w["timestamp"], y=df_w["q25_hallenbad_oerlikon"], line_width=0, showlegend=False),
             go.Scatter(
                 x=df_w["timestamp"],
-                y=df_w["q75"],
+                y=df_w["q75_hallenbad_oerlikon"],
                 fill="tonexty",
                 fillcolor="rgba(255,165,0,0.2)",
                 name="Q25-Q75",
@@ -314,7 +334,7 @@ def _(date, df_pred, go, pl):
                 x=df_w["timestamp"], y=df_w["hallenbad_oerlikon"], name="Actual"
             ),
             go.Scatter(
-                x=df_w["timestamp"], y=df_w["rmse"], name="RMSE", line_dash="dash"
+                x=df_w["timestamp"], y=df_w["rmse_hallenbad_oerlikon"], name="RMSE", line_dash="dash"
             ),
         ]
     )
