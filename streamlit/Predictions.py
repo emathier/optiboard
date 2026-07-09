@@ -26,7 +26,7 @@ st.set_page_config(
 )
 
 # Inject the script into the app (hidden from view)
-st.html(ga_html,  allow_unsafe_html=True)
+st.html(ga_html,  unsafe_allow_javascript=True)
 
 # Custom CSS to remove top whitespace and make layout compact
 st.markdown("""
