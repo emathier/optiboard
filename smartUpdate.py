@@ -12,10 +12,7 @@ def _():
     import requests
     from mlforecast import MLForecast
     import lightgbm as lgb
-    import pandas as pd
     import plotly.graph_objects as go
-    import matplotlib.pyplot as plt
-    import seaborn as sns
     import pickle
     from datetime import date
     from tqdm import tqdm
