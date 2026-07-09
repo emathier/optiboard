@@ -6,3 +6,5 @@ google-cloud-sdk/*
 .vscode/*
 __pycache__/*
 creds.json
+__pycache__/*
+.DS_Store
