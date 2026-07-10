@@ -49,7 +49,7 @@ jobs:
           
           # Check if there are actual updates to commit
           if ! git diff --quiet || ! git diff --staged --quiet; then
-            git commit -m "chore: hourly data refresh [skip ci]"
+            git commit -m "chore: hourly data refresh - $(date -u +"%Y-%m-%d %H:%M:%S UTC")"
             git push
           else
             echo "No changes in data files detected."
