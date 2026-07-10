@@ -1,8 +1,6 @@
 import streamlit as st
-import polars as pl
 from logging_config import get_logger
 import duckdb as dd
-import plotly.graph_objects as go
 from contextlib import contextmanager
 import time
 import matplotlib.pyplot as plt

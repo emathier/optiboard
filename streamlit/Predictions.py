@@ -2,7 +2,7 @@ import streamlit as st
 import polars as pl
 import plotly.graph_objects as go
 from logging_config import get_logger
-from datetime import datetime, timedelta
+from datetime import timedelta
 import streamlit.components.v1 as components
 
 # Define your Google Analytics script
@@ -25,16 +25,15 @@ ga_html = """
 
 # Page config
 st.set_page_config(
-    page_title="Pool Occupancy Predictions",
-    page_icon="🔮",
-    layout="wide"
+    page_title="Pool Occupancy Predictions", page_icon="🔮", layout="wide"
 )
 
 # Inject the script into the app (hidden from view)
 components.html(ga_html, height=0, width=0)
 
 # Custom CSS to remove top whitespace and make layout compact
-st.markdown("""
+st.markdown(
+    """
     <style>
         .block-container {
             padding-top: 1.5rem !important;
@@ -44,10 +43,13 @@ st.markdown("""
             display: none !important;
         }
     </style>
-""", unsafe_allow_html=True)
+""",
+    unsafe_allow_html=True,
+)
 
 log = get_logger("streamlit-predictions")
 log.info("Loading Pool Predictions page")
+
 
 # Load data
 @st.cache_data
@@ -56,13 +58,14 @@ def load_data():
     # Handle timezones safely
     if df["timestamp"].dtype.time_zone is None:
         df = df.with_columns(
-            pl.col("timestamp").dt.replace_time_zone("UTC").dt.convert_time_zone("Europe/Zurich")
+            pl.col("timestamp")
+            .dt.replace_time_zone("UTC")
+            .dt.convert_time_zone("Europe/Zurich")
         )
     else:
-        df = df.with_columns(
-            pl.col("timestamp").dt.convert_time_zone("Europe/Zurich")
-        )
+        df = df.with_columns(pl.col("timestamp").dt.convert_time_zone("Europe/Zurich"))
     return df
+
 
 try:
     df = load_data()
@@ -70,12 +73,14 @@ except Exception as e:
     st.error(f"Error loading predictions: {e}")
     st.stop()
 
-# Extract pools that have predictions (i.e. have rmse_ columns)
-rmse_cols = [c for c in df.columns if c.startswith("rmse_")]
-pools = sorted([c.replace("rmse_", "") for c in rmse_cols])
+# Extract pools that have predictions (i.e. have q50_ columns)
+q50_cols = [c for c in df.columns if c.startswith("q50_")]
+pools = sorted([c.replace("q50_", "") for c in q50_cols])
+
 
 def format_pool_name(name):
     return name.replace("_", " ").title()
+
 
 pool_options = {format_pool_name(p): p for p in pools}
 
@@ -100,13 +105,18 @@ st.title("🔮 Pool Occupancy Forecasts")
 # Inline header and selector
 col1, col2, col3 = st.columns([2.1, 3, 5], vertical_alignment="center")
 with col1:
-    st.markdown("<span style='font-size: 1.2rem; font-weight: 600; white-space: nowrap;'>Interactive forecasts for</span>", unsafe_allow_html=True)
+    st.markdown(
+        "<span style='font-size: 1.2rem; font-weight: 600; white-space: nowrap;'>Interactive forecasts for</span>",
+        unsafe_allow_html=True,
+    )
 with col2:
     selected_pool_label = st.selectbox(
         "Select Pool",
         options=list(pool_options.keys()),
-        index=list(pool_options.keys()).index("Hallenbad Oerlikon") if "Hallenbad Oerlikon" in pool_options else 0,
-        label_visibility="collapsed"
+        index=list(pool_options.keys()).index("Hallenbad Oerlikon")
+        if "Hallenbad Oerlikon" in pool_options
+        else 0,
+        label_visibility="collapsed",
     )
     selected_pool = pool_options[selected_pool_label]
 
@@ -122,16 +132,16 @@ else:
 
 # Filter data
 forecast_df = df.filter(
-    (pl.col("timestamp") > cutoff_timestamp) & 
-    (pl.col(f"rmse_{selected_pool}").is_not_null())
+    (pl.col("timestamp") > cutoff_timestamp)
+    & (pl.col(f"q50_{selected_pool}").is_not_null())
 ).sort("timestamp")
 
 if history_delta > timedelta(0):
     start_history = cutoff_timestamp - history_delta
     history_df = df.filter(
-        (pl.col("timestamp") <= cutoff_timestamp) & 
-        (pl.col("timestamp") >= start_history) &
-        (pl.col(selected_pool).is_not_null())
+        (pl.col("timestamp") <= cutoff_timestamp)
+        & (pl.col("timestamp") >= start_history)
+        & (pl.col(selected_pool).is_not_null())
     ).sort("timestamp")
 else:
     history_df = pl.DataFrame(schema=df.schema)
@@ -142,7 +152,9 @@ latest_actual = None
 latest_time_str = "N/A"
 if len(history_df) > 0:
     latest_actual = history_df.select(pl.col(selected_pool).last()).item()
-    latest_time_str = history_df.select(pl.col("timestamp").last()).item().strftime("%H:%M (%a)")
+    latest_time_str = (
+        history_df.select(pl.col("timestamp").last()).item().strftime("%H:%M (%a)")
+    )
 
 # 2. Peak Forecast Tomorrow
 tomorrow_date = cutoff_timestamp.date() + timedelta(days=1)
@@ -150,9 +162,11 @@ peak_val_tomorrow = "N/A"
 peak_time_tomorrow = "N/A"
 tomorrow_df = forecast_df.filter(pl.col("timestamp").dt.date() == tomorrow_date)
 if len(tomorrow_df) > 0:
-    peak_idx = tomorrow_df[f"rmse_{selected_pool}"].arg_max()
+    peak_idx = tomorrow_df[f"q50_{selected_pool}"].arg_max()
     if peak_idx is not None:
-        peak_val_tomorrow = f"{int(round(tomorrow_df[f'rmse_{selected_pool}'][peak_idx]))}"
+        peak_val_tomorrow = (
+            f"{int(round(tomorrow_df[f'q50_{selected_pool}'][peak_idx]))}"
+        )
         peak_time_tomorrow = tomorrow_df["timestamp"][peak_idx].strftime("%H:%M (%a)")
 
 # 3. Raining Tomorrow
@@ -162,7 +176,7 @@ avg_clouds = 0.0
 if len(tomorrow_df) > 0:
     precip_sum = tomorrow_df["precipitation"].sum()
     avg_clouds = tomorrow_df["cloud_cover"].mean()
-    
+
     if precip_sum > 0.1:
         raining_tomorrow = "Yes 🌧️"
     else:
@@ -182,7 +196,7 @@ with col1:
             label="Latest Actual Occupancy",
             value=f"{int(round(latest_actual))}",
             delta=f"at {latest_time_str}",
-            delta_color="off"
+            delta_color="off",
         )
     else:
         st.metric(label="Latest Actual Occupancy", value="N/A")
@@ -192,15 +206,17 @@ with col2:
         label=f"Peak Predicted Tomorrow ({tomorrow_date.strftime('%d.%m')})",
         value=peak_val_tomorrow,
         delta=f"expected {peak_time_tomorrow}" if peak_time_tomorrow != "N/A" else None,
-        delta_color="off"
+        delta_color="off",
     )
 
 with col3:
     st.metric(
         label="Raining Tomorrow?",
         value=raining_tomorrow,
-        delta=f"{precip_sum:.1f} mm expected" if precip_sum > 0.1 else "No rain expected",
-        delta_color="off"
+        delta=f"{precip_sum:.1f} mm expected"
+        if precip_sum > 0.1
+        else "No rain expected",
+        delta_color="off",
     )
 
 with col4:
@@ -209,7 +225,7 @@ with col4:
             label="Predictions Updated",
             value=cutoff_timestamp.strftime("%H:%M (%a)"),
             delta=cutoff_timestamp.strftime("%d.%m.%Y"),
-            delta_color="off"
+            delta_color="off",
         )
     else:
         st.metric(label="Predictions Updated", value="N/A")
@@ -220,16 +236,27 @@ st.markdown("---")
 # Prepare forecast dataframe to connect smoothly to history
 if len(history_df) > 0 and len(forecast_df) > 0:
     last_hist = history_df.tail(1)
-    prepend_row = pl.DataFrame({
-        "timestamp": last_hist["timestamp"],
-        f"rmse_{selected_pool}": last_hist[selected_pool].cast(pl.Float64),
-        f"q25_{selected_pool}": last_hist[selected_pool].cast(pl.Float64),
-        f"q75_{selected_pool}": last_hist[selected_pool].cast(pl.Float64),
-    })
-    plot_forecast_df = pl.concat([
-        prepend_row,
-        forecast_df.select(["timestamp", f"rmse_{selected_pool}", f"q25_{selected_pool}", f"q75_{selected_pool}"])
-    ])
+    prepend_row = pl.DataFrame(
+        {
+            "timestamp": last_hist["timestamp"],
+            f"q50_{selected_pool}": last_hist[selected_pool].cast(pl.Float64),
+            f"q25_{selected_pool}": last_hist[selected_pool].cast(pl.Float64),
+            f"q75_{selected_pool}": last_hist[selected_pool].cast(pl.Float64),
+        }
+    )
+    plot_forecast_df = pl.concat(
+        [
+            prepend_row,
+            forecast_df.select(
+                [
+                    "timestamp",
+                    f"q50_{selected_pool}",
+                    f"q25_{selected_pool}",
+                    f"q75_{selected_pool}",
+                ]
+            ),
+        ]
+    )
 else:
     plot_forecast_df = forecast_df
 
@@ -237,58 +264,67 @@ fig = go.Figure()
 
 # 1. Plot Historical Actuals
 if len(history_df) > 0:
-    fig.add_trace(go.Scatter(
-        x=history_df["timestamp"],
-        y=history_df[selected_pool],
-        name="Actual Occupancy",
-        mode="lines",
-        line=dict(color="#0D9488", width=3), # Sleek Teal
-        hovertemplate="<b>Actual</b><br>Time: %{x|%Y-%m-%d %H:%M}<br>Occupancy: %{y}<extra></extra>"
-    ))
+    fig.add_trace(
+        go.Scatter(
+            x=history_df["timestamp"],
+            y=history_df[selected_pool],
+            name="Actual Occupancy",
+            mode="lines",
+            line=dict(color="#0D9488", width=3),  # Sleek Teal
+            hovertemplate="<b>Actual</b><br>Time: %{x|%Y-%m-%d %H:%M}<br>Occupancy: %{y}<extra></extra>",
+        )
+    )
 
 # 2. Plot Forecast Bounds (Quantiles Q25 - Q75)
 if len(plot_forecast_df) > 0:
     # Q25 lower bound (hidden line)
-    fig.add_trace(go.Scatter(
-        x=plot_forecast_df["timestamp"],
-        y=plot_forecast_df[f"q25_{selected_pool}"],
-        line=dict(width=0),
-        showlegend=False,
-        hoverinfo="skip"
-    ))
-    
-    # Q75 upper bound (filled to Q25)
-    fig.add_trace(go.Scatter(
-        x=plot_forecast_df["timestamp"],
-        y=plot_forecast_df[f"q75_{selected_pool}"],
-        fill="tonexty",
-        fillcolor="rgba(245, 158, 11, 0.12)", # Warm amber shadow
-        line=dict(width=0),
-        name="Confidence Interval (Q25-Q75)",
-        hovertemplate="<b>Range (Q25-Q75)</b><br>Time: %{x|%Y-%m-%d %H:%M}<br>Q25: %{customdata}<br>Q75: %{y}<extra></extra>",
-        customdata=plot_forecast_df[f"q25_{selected_pool}"]
-    ))
+    fig.add_trace(
+        go.Scatter(
+            x=plot_forecast_df["timestamp"],
+            y=plot_forecast_df[f"q25_{selected_pool}"],
+            line=dict(width=0),
+            showlegend=False,
+            hoverinfo="skip",
+        )
+    )
 
-# 3. Plot Expected Forecast (RMSE)
+    # Q75 upper bound (filled to Q25)
+    fig.add_trace(
+        go.Scatter(
+            x=plot_forecast_df["timestamp"],
+            y=plot_forecast_df[f"q75_{selected_pool}"],
+            fill="tonexty",
+            fillcolor="rgba(245, 158, 11, 0.12)",  # Warm amber shadow
+            line=dict(width=0),
+            name="Confidence Interval (Q25-Q75)",
+            hovertemplate="<b>Range (Q25-Q75)</b><br>Time: %{x|%Y-%m-%d %H:%M}<br>Q25: %{customdata}<br>Q75: %{y}<extra></extra>",
+            customdata=plot_forecast_df[f"q25_{selected_pool}"],
+        )
+    )
+
+# 3. Plot Expected Forecast (Q50)
 if len(plot_forecast_df) > 0:
-    fig.add_trace(go.Scatter(
-        x=plot_forecast_df["timestamp"],
-        y=plot_forecast_df[f"rmse_{selected_pool}"],
-        name="Forecasted Occupancy",
-        mode="lines",
-        line=dict(color="#D97706", width=3, dash="dash"), # Warm Amber
-        hovertemplate="<b>Forecast</b><br>Time: %{x|%Y-%m-%d %H:%M}<br>Predicted: %{y:.1f}<extra></extra>"
-    ))
+    fig.add_trace(
+        go.Scatter(
+            x=plot_forecast_df["timestamp"],
+            y=plot_forecast_df[f"q50_{selected_pool}"],
+            name="Forecasted Occupancy",
+            mode="lines",
+            line=dict(color="#D97706", width=3, dash="dash"),  # Warm Amber
+            hovertemplate="<b>Forecast</b><br>Time: %{x|%Y-%m-%d %H:%M}<br>Predicted: %{y:.1f}<extra></extra>",
+        )
+    )
 
 # 4. Add vertical Line for Now/Cutoff
 fig.add_vline(
-    x=cutoff_timestamp.timestamp() * 1000, # plotly needs milliseconds for timestamp line
+    x=cutoff_timestamp.timestamp()
+    * 1000,  # plotly needs milliseconds for timestamp line
     line_width=2,
     line_dash="dot",
     line_color="#EF4444",
     annotation_text="Forecast Start",
     annotation_position="top left",
-    annotation_font=dict(color="#EF4444", size=11, family="Inter")
+    annotation_font=dict(color="#EF4444", size=11, family="Inter"),
 )
 
 # Custom Layout - height reduced from 550 to 420 for compactness
@@ -303,7 +339,7 @@ fig.update_layout(
         gridcolor="#E5E7EB",
         linewidth=1,
         linecolor="#9CA3AF",
-        tickformat="%a %H:%M"
+        tickformat="%a %H:%M",
     ),
     yaxis=dict(
         title="Occupancy (People)",
@@ -311,7 +347,7 @@ fig.update_layout(
         gridcolor="#E5E7EB",
         linewidth=1,
         linecolor="#9CA3AF",
-        rangemode="tozero"
+        rangemode="tozero",
     ),
     legend=dict(
         orientation="h",
@@ -319,8 +355,8 @@ fig.update_layout(
         y=1.02,
         xanchor="left",
         x=0,
-        font=dict(size=11)
-    )
+        font=dict(size=11),
+    ),
 )
 
 st.plotly_chart(fig, use_container_width=True)
@@ -336,36 +372,39 @@ This dashboard predicts public pool occupancy using machine learning to help you
 """)
 
 
-
 # ----------------- Weather Context Expander -----------------
 with st.expander("🌦️ View Weather Forecast & Context"):
     st.markdown("Here is the weather forecast for the next 48 hours:")
-    
+
     if len(forecast_df) > 0:
         # Apparent Temperature & Precipitation Subplot
         fig_weather = go.Figure()
-        
+
         # Temp line
-        fig_weather.add_trace(go.Scatter(
-            x=forecast_df["timestamp"],
-            y=forecast_df["apparent_temperature"],
-            name="Apparent Temp (°C)",
-            yaxis="y1",
-            line=dict(color="#EF4444", width=2.5),
-            hovertemplate="%{y:.1f}°C"
-        ))
-        
+        fig_weather.add_trace(
+            go.Scatter(
+                x=forecast_df["timestamp"],
+                y=forecast_df["apparent_temperature"],
+                name="Apparent Temp (°C)",
+                yaxis="y1",
+                line=dict(color="#EF4444", width=2.5),
+                hovertemplate="%{y:.1f}°C",
+            )
+        )
+
         # Precipitation bar
-        fig_weather.add_trace(go.Bar(
-            x=forecast_df["timestamp"],
-            y=forecast_df["precipitation"],
-            name="Precipitation (mm)",
-            yaxis="y2",
-            marker_color="#3B82F6",
-            opacity=0.7,
-            hovertemplate="%{y:.2f} mm"
-        ))
-        
+        fig_weather.add_trace(
+            go.Bar(
+                x=forecast_df["timestamp"],
+                y=forecast_df["precipitation"],
+                name="Precipitation (mm)",
+                yaxis="y2",
+                marker_color="#3B82F6",
+                opacity=0.7,
+                hovertemplate="%{y:.2f} mm",
+            )
+        )
+
         # Dual axes layout
         fig_weather.update_layout(
             height=300,
@@ -378,7 +417,7 @@ with st.expander("🌦️ View Weather Forecast & Context"):
                 title_font=dict(color="#EF4444"),
                 tickfont=dict(color="#EF4444"),
                 showgrid=True,
-                gridcolor="#F3F4F6"
+                gridcolor="#F3F4F6",
             ),
             yaxis2=dict(
                 title="Precipitation (mm)",
@@ -386,17 +425,11 @@ with st.expander("🌦️ View Weather Forecast & Context"):
                 tickfont=dict(color="#3B82F6"),
                 overlaying="y",
                 side="right",
-                rangemode="tozero"
+                rangemode="tozero",
             ),
-            legend=dict(
-                orientation="h",
-                yanchor="bottom",
-                y=1.02,
-                xanchor="left",
-                x=0
-            )
+            legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="left", x=0),
         )
-        
+
         st.plotly_chart(fig_weather, use_container_width=True)
     else:
         st.write("No weather forecast data available.")
@@ -405,16 +438,18 @@ with st.expander("🌦️ View Weather Forecast & Context"):
 with st.expander("📊 View Detailed Forecast Table"):
     if len(forecast_df) > 0:
         # Create user-friendly dataframe for display
-        table_df = forecast_df.select([
-            pl.col("timestamp").dt.strftime("%Y-%m-%d %H:%M").alias("Time"),
-            pl.col(f"rmse_{selected_pool}").round(1).alias("Predicted Occupancy"),
-            pl.col(f"q25_{selected_pool}").round(1).alias("Lower Bound (Q25)"),
-            pl.col(f"q75_{selected_pool}").round(1).alias("Upper Bound (Q75)"),
-            pl.col("apparent_temperature").round(1).alias("Apparent Temp (°C)"),
-            pl.col("cloud_cover").round(0).alias("Cloud Cover (%)"),
-            pl.col("precipitation").round(2).alias("Precipitation (mm)")
-        ])
-        
+        table_df = forecast_df.select(
+            [
+                pl.col("timestamp").dt.strftime("%Y-%m-%d %H:%M").alias("Time"),
+                pl.col(f"q50_{selected_pool}").round(1).alias("Predicted Occupancy"),
+                pl.col(f"q25_{selected_pool}").round(1).alias("Lower Bound (Q25)"),
+                pl.col(f"q75_{selected_pool}").round(1).alias("Upper Bound (Q75)"),
+                pl.col("apparent_temperature").round(1).alias("Apparent Temp (°C)"),
+                pl.col("cloud_cover").round(0).alias("Cloud Cover (%)"),
+                pl.col("precipitation").round(2).alias("Precipitation (mm)"),
+            ]
+        )
+
         st.dataframe(table_df.to_pandas(), use_container_width=True, hide_index=True)
     else:
         st.write("No forecast data available.")

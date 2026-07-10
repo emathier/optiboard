@@ -218,16 +218,14 @@ def _(mo):
 
 @app.cell
 def _(mo):
-    avg_params = {'objective': 'regression',"metric": "rmse",'max_depth': 6, 'num_leaves': 64, 'min_child_samples': 81, 'learning_rate': 0.1461850400837278, 'n_estimators': 48, 'subsample': 0.6187186502554506, 'colsample_bytree': 0.7418257791996054, 'reg_alpha': 18.37278169756974, 'reg_lambda': 2.9154791826478093e-05,"n_jobs": 3, 'force_row_wise':'true', 'verbosity' : -1}
-
-    {'max_depth': 2, 'num_leaves': 163, 'min_child_samples': 30, 'learning_rate': 0.021135965397203384, 'n_estimators': 165, 'subsample': 0.5428985486414801, 'colsample_bytree': 0.5756412458091791, 'reg_alpha': 9.155344596868722e-11, 'reg_lambda': 3.028557596317042e-05}
+    q50_params = {"objective": "quantile","alpha": 0.5,'max_depth': 2, 'num_leaves': 831, 'min_child_samples': 91, 'learning_rate': 0.022709386088025214, 'n_estimators': 218, 'subsample': 0.6660453105459831, 'colsample_bytree': 0.6961401925740152, 'reg_alpha': 9.442575917558448e-15, 'reg_lambda': 1.444248810109452e-05, "n_jobs": 3, 'force_row_wise':'true', 'verbosity' : -1}
 
     q25_params = {"objective": "quantile","alpha": 0.25,'max_depth': 9, 'num_leaves': 512, 'min_child_samples': 88, 'learning_rate': 0.07389856738099874, 'n_estimators': 84, 'subsample': 0.9333086686035081, 'colsample_bytree': 0.5090952964299004, 'reg_alpha': 0.017336162465283883, 'reg_lambda': 0.0019493228509678015, "n_jobs": 3, 'force_row_wise':'true', 'verbosity' : -1}
 
     q75_params = {"objective": "quantile","alpha": 0.75,'max_depth': 6, 'num_leaves': 64, 'min_child_samples': 62, 'learning_rate': 0.023925349245515218, 'n_estimators': 243, 'subsample': 0.5512803618937144, 'colsample_bytree': 0.5271164964005131, 'reg_alpha': 1.322055949009689e-08, 'reg_lambda': 1.012740564311525e-06, "n_jobs": 3, 'force_row_wise':'true', 'verbosity' : -1}
 
-    mo.hstack([avg_params, q25_params, q75_params])
-    return avg_params, q25_params, q75_params
+    mo.hstack([q50_params, q25_params, q75_params])
+    return q25_params, q50_params, q75_params
 
 
 @app.cell
@@ -235,13 +233,12 @@ def _(
     COVARIATES,
     MLForecast,
     RETRAIN_MODEL,
-    avg_params,
     df_final,
     lgb,
-    newest_occupancy,
     pickle,
     pl,
     q25_params,
+    q50_params,
     q75_params,
     tqdm,
 ):
@@ -271,7 +268,7 @@ def _(
         for group in tqdm(df_ml.partition_by("unique_id")):                                                                
             uid = group["unique_id"][0]                                                                              
             fcst = MLForecast(                                                                                       
-                models={'rmse' : lgb.LGBMRegressor(**avg_params),                                                    
+                models={'q50' : lgb.LGBMRegressor(**q50_params),                                                    
                        'q25' : lgb.LGBMRegressor(**q25_params),                                                      
                        'q75' : lgb.LGBMRegressor(**q75_params)},                                                     
                 freq="5min",                                                                                         
@@ -355,7 +352,7 @@ def _(date, go, pl, product):
                 x=df_w["timestamp"], y=df_w["hallenbad_oerlikon"], name="Actual"
             ),
             go.Scatter(
-                x=df_w["timestamp"], y=df_w["rmse_hallenbad_oerlikon"], name="RMSE", line_dash="dash"
+                x=df_w["timestamp"], y=df_w["q50_hallenbad_oerlikon"], name="q50", line_dash="dash"
             ),
         ]
     )
