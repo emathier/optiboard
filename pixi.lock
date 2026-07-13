@@ -745,7 +745,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/noarch/databricks-sdk-0.73.0-pyhd8ed1ab_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/dataclasses-0.8-pyhc8e2a94_3.tar.bz2
       - conda: https://conda.anaconda.org/conda-forge/noarch/datasets-2.2.1-pyhd8ed1ab_0.tar.bz2
-      - conda: https://conda.anaconda.org/conda-forge/noarch/dayplot-0.5.1-pyhcf101f3_0.conda
+      - conda: https://conda.anaconda.org/conda-forge/noarch/dayplot-0.6.0-pyhcf101f3_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/db-dtypes-1.7.0-pyhcf101f3_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/decorator-5.3.1-pyhd8ed1ab_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/defusedxml-0.7.1-pyhd8ed1ab_0.tar.bz2
@@ -7819,19 +7819,6 @@ packages:
   run_exports: {}
   size: 255290
   timestamp: 1652662069954
-- conda: https://conda.anaconda.org/conda-forge/noarch/dayplot-0.5.1-pyhcf101f3_0.conda
-  sha256: 0a6c293e135c9c8f73a74155bb8ff7fd324768f9a6c515e896ab5d2312c6b004
-  md5: 0ba5045200877bc3520a744bc2337a9c
-  depends:
-  - python >=3.10
-  - matplotlib-base
-  - narwhals >=1.0
-  - python
-  license: MIT
-  license_family: MIT
-  run_exports: {}
-  size: 20494
-  timestamp: 1771403890900
 - conda: https://conda.anaconda.org/conda-forge/noarch/dayplot-0.6.0-pyhcf101f3_0.conda
   sha256: d8dcfee428f41b6c3606bf740a4bb788bf8e48ef548165b6ca3efe571d6a341a
   md5: 2d2d851a866c63c40cc164ef9bba305c

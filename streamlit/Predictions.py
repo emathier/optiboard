@@ -77,6 +77,10 @@ except Exception as e:
 q50_cols = [c for c in df.columns if c.startswith("q50_")]
 pools = sorted([c.replace("q50_", "") for c in q50_cols])
 
+# Remove specified pools
+pools_to_remove = {"adliswil", "entfelden", "altstetten", "luzern", "wengen", "zug"}
+pools = [p for p in pools if not any(r in p for r in pools_to_remove)]
+
 
 def format_pool_name(name):
     return name.replace("_", " ").title()
