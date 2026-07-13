@@ -1,13 +1,1 @@
-marimo
-numpy<2
-polars
-google-cloud-bigquery
-pyarrow
-requests
-mlforecast>=0.14.0,<0.15
-lightgbm
-pandas
-plotly
-tqdm>=4.68.4,<5
-duckdb
-matplotlib
+dayplot
