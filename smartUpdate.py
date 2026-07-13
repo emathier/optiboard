@@ -218,11 +218,15 @@ def _(mo):
 
 @app.cell
 def _(mo):
-    q50_params = {"objective": "quantile","alpha": 0.5,'max_depth': 2, 'num_leaves': 831, 'min_child_samples': 91, 'learning_rate': 0.022709386088025214, 'n_estimators': 218, 'subsample': 0.6660453105459831, 'colsample_bytree': 0.6961401925740152, 'reg_alpha': 9.442575917558448e-15, 'reg_lambda': 1.444248810109452e-05, "n_jobs": 3, 'force_row_wise':'true', 'verbosity' : -1}
+    unified_params = {'max_depth': 4, 'num_leaves': 16, 'min_child_samples': 22, 'learning_rate': 0.08246222706909091, 'n_estimators': 53, 'subsample': 0.47816127787368634, 'colsample_bytree': 0.7163988409757711, 'reg_alpha': 6.789933439605129, 'reg_lambda': 0.005299800695377446, 'verbosity' : -1, "n_jobs": 3, 'force_row_wise':'true'}
 
-    q25_params = {"objective": "quantile","alpha": 0.25,'max_depth': 9, 'num_leaves': 512, 'min_child_samples': 88, 'learning_rate': 0.07389856738099874, 'n_estimators': 84, 'subsample': 0.9333086686035081, 'colsample_bytree': 0.5090952964299004, 'reg_alpha': 0.017336162465283883, 'reg_lambda': 0.0019493228509678015, "n_jobs": 3, 'force_row_wise':'true', 'verbosity' : -1}
+    q50_params = {"objective": "quantile","alpha": 0.5, **unified_params}
 
-    q75_params = {"objective": "quantile","alpha": 0.75,'max_depth': 6, 'num_leaves': 64, 'min_child_samples': 62, 'learning_rate': 0.023925349245515218, 'n_estimators': 243, 'subsample': 0.5512803618937144, 'colsample_bytree': 0.5271164964005131, 'reg_alpha': 1.322055949009689e-08, 'reg_lambda': 1.012740564311525e-06, "n_jobs": 3, 'force_row_wise':'true', 'verbosity' : -1}
+    q25_params = {"objective": "quantile","alpha": 0.25, **unified_params}
+
+    q75_params = {"objective": "quantile","alpha": 0.75, **unified_params}
+
+
 
     mo.hstack([q50_params, q25_params, q75_params])
     return q25_params, q50_params, q75_params
