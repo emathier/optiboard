@@ -5,6 +5,9 @@ from logging_config import get_logger
 from datetime import timedelta
 import streamlit.components.v1 as components
 
+log = get_logger("streamlit-predictions")
+log.info("Loading Pool Predictions page")
+
 def inject_ga():
     ga_code = """
     <!-- Google tag (gtag.js) -->
@@ -21,6 +24,7 @@ def inject_ga():
       });
     </script>
     """
+    log.info("Injecting Google Analytics code into Streamlit app")
     components.html(ga_code, height=0, width=0)
 
 # Direkt als allererstes aufrufen
@@ -47,10 +51,6 @@ st.markdown(
 """,
     unsafe_allow_html=True,
 )
-
-log = get_logger("streamlit-predictions")
-log.info("Loading Pool Predictions page")
-
 
 # Load data
 @st.cache_data
