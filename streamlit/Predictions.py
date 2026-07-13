@@ -5,31 +5,27 @@ from logging_config import get_logger
 from datetime import timedelta
 import streamlit.components.v1 as components
 
-# Define your Google Analytics script
-ga_html = """
-<html>
-  <head>
+def inject_ga():
+    ga_code = """
+    <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-B8Q76KSZZY"></script>
     <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
 
-    gtag('config', 'G-B8Q76KSZZY');
+      // WICHTIG: Verbindet das iframe mit Ihrer streamlit.com Domain
+      gtag('config', 'G-B8Q76KSZZY', {
+          'page_path': parent.window.location.pathname,
+          'page_title': parent.document.title
+      });
     </script>
-    </head>
-  <body></body>
-</html>
-"""
+    """
+    components.html(ga_code, height=0, width=0)
 
+# Direkt als allererstes aufrufen
+inject_ga()
 
-# Page config
-st.set_page_config(
-    page_title="Pool Occupancy Predictions", page_icon="🔮", layout="wide"
-)
-
-# Inject the script into the app (hidden from view)
-components.html(ga_html, height=0, width=0)
 
 # Custom CSS to remove top whitespace and make layout compact
 st.markdown(
