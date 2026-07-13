@@ -26,6 +26,13 @@ def inject_ga():
 # Direkt als allererstes aufrufen
 inject_ga()
 
+# Page config
+st.set_page_config(
+    page_title="Pool Occupancy Predictions", page_icon="🔮", layout="wide"
+)
+
+# Inject the script into the app (hidden from view)
+components.html(ga_html, height=0, width=0)
 
 # Custom CSS to remove top whitespace and make layout compact
 st.markdown(
