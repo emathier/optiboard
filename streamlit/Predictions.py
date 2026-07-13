@@ -17,10 +17,29 @@ def inject_ga():
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
 
-      // WICHTIG: Verbindet das iframe mit Ihrer streamlit.com Domain
+      // Safely track page view path and title, preventing cross-origin iframe security errors
+      var page_path = window.location.pathname;
+      var page_title = document.title;
+      try {
+        if (window.parent && window.parent.location) {
+          page_path = window.parent.location.pathname;
+          page_title = window.parent.document.title;
+        }
+      } catch (e) {
+        // Fallback to referrer if cross-origin access is restricted
+        if (document.referrer) {
+          try {
+            var refUrl = new URL(document.referrer);
+            page_path = refUrl.pathname;
+          } catch (urlError) {
+            // Ignore malformed URL
+          }
+        }
+      }
+
       gtag('config', 'G-B8Q76KSZZY', {
-          'page_path': parent.window.location.pathname,
-          'page_title': parent.document.title
+          'page_path': page_path,
+          'page_title': page_title
       });
     </script>
     """
