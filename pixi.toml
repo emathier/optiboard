@@ -12,7 +12,6 @@ fetch-occupancy = "python scripts/fetchOccupancy.py"
 fetch-weather = "python scripts/fetchHistoricalWeather.py"
 interpolate-weather = "python scripts/interpolateWeather.py"
 
-# The master task that runs them sequentially
 refresh-data = { depends-on = ["fetch-occupancy", "fetch-weather", "interpolate-weather"] }
 
 [dependencies]
