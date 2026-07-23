@@ -16,9 +16,23 @@ def time_this(label):
 log = get_logger("streamlit-overview")
 log.debug("Starting Streamlit overview dashboard")
 
- # Fetching data
+RAW_OCCUPANCY_URL = "https://raw.githubusercontent.com/emathier/optiboard/main/data-files/occupancy-weather.parquet"
+LOCAL_OCCUPANCY_PATH = "data-files/occupancy-weather.parquet"
+
+@st.cache_data(ttl="15m")
+def get_data_source():
+    try:
+        dd.query(f"SELECT 1 FROM '{RAW_OCCUPANCY_URL}' LIMIT 1")
+        return RAW_OCCUPANCY_URL
+    except Exception as e:
+        log.warning(f"Could not reach remote occupancy dataset ({e}), falling back to local file {LOCAL_OCCUPANCY_PATH}")
+        return LOCAL_OCCUPANCY_PATH
+
+data_source = get_data_source()
+
+# Fetching data
 log.debug("Reading occupancy-weather.parquet into DataFrame")
-df = dd.query("SELECT timestamp, hallenbad_city, hallenbad_oerlikon FROM 'data-files/occupancy-weather.parquet' ORDER BY timestamp DESC LIMIT 1000").pl()
+df = dd.query(f"SELECT timestamp, hallenbad_city, hallenbad_oerlikon FROM '{data_source}' ORDER BY timestamp DESC LIMIT 1000").pl()
 log.info(f"Read {len(df)} rows from occupancy-weather.parquet")
 
 # Streamlit 
@@ -30,10 +44,10 @@ st.set_page_config(
 st.title("Data Availability Dashboard")
 st.write("This plot shows on which days we have occupancy data available. The early versions of the scraper only scraped Hallenbad Oerlikon and Hallenbad City, so the plot only shows data for these two pools. ") 
 
-query = """
+query = f"""
 SELECT DATE(timestamp) AS day,
 COUNT(*) AS total_records
-FROM 'data-files/occupancy-weather.parquet'
+FROM '{data_source}'
 WHERE hallenbad_oerlikon IS NOT NULL
 GROUP BY day
 ORDER BY day
@@ -93,10 +107,10 @@ st.pyplot(fig)
 st.markdown("---")
 st.subheader("All other pools")
 st.write("The following plot shows the data availability for all other pools. ")
-query_bern = """
+query_bern = f"""
 SELECT DATE(timestamp) AS day,
 COUNT(*) AS total_records
-FROM 'data-files/occupancy-weather.parquet'
+FROM '{data_source}'
 WHERE bern_wylerbad IS NOT NULL
 GROUP BY day
 ORDER BY day

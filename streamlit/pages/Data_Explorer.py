@@ -31,7 +31,19 @@ st.markdown("""
 log = get_logger("streamlit-explorer")
 log.info("Loading Historical Data Explorer page")
 
-data_source = "data-files/occupancy-weather.parquet"
+RAW_OCCUPANCY_URL = "https://raw.githubusercontent.com/emathier/optiboard/main/data-files/occupancy-weather.parquet"
+LOCAL_OCCUPANCY_PATH = "data-files/occupancy-weather.parquet"
+
+@st.cache_data(ttl="15m")
+def get_data_source():
+    try:
+        dd.query(f"SELECT 1 FROM '{RAW_OCCUPANCY_URL}' LIMIT 1")
+        return RAW_OCCUPANCY_URL
+    except Exception as e:
+        log.warning(f"Could not reach remote occupancy dataset ({e}), falling back to local file {LOCAL_OCCUPANCY_PATH}")
+        return LOCAL_OCCUPANCY_PATH
+
+data_source = get_data_source()
 
 @contextmanager
 def time_this(label):

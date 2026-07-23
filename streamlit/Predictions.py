@@ -72,9 +72,16 @@ st.markdown(
 )
 
 # Load data
-@st.cache_data
+@st.cache_data(ttl="15m")
 def load_data():
-    df = pl.read_parquet("data-files/inference.parquet")
+    raw_url = "https://raw.githubusercontent.com/emathier/optiboard/main/data-files/inference.parquet"
+    local_path = "data-files/inference.parquet"
+    try:
+        df = pl.read_parquet(raw_url)
+    except Exception as e:
+        log.warning(f"Could not load data from remote GitHub URL ({e}), falling back to local file {local_path}")
+        df = pl.read_parquet(local_path)
+
     # Handle timezones safely
     if df["timestamp"].dtype.time_zone is None:
         df = df.with_columns(
