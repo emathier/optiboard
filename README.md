@@ -61,45 +61,46 @@ By combining real-time turnstile IoT data with high-resolution weather observati
 
 ```mermaid
 flowchart TD
-    subgraph Data Sources & Ingestion
-        A1[IoT Turnstiles / Web Scrapers] -->|Continuous Writes| B1[(Google BigQuery: badi_data.currentfill)]
-        A2[Open-Meteo Historical API] -->|Hourly Weather Logs| B2[Historical Weather Stream]
-        A3[Open-Meteo Forecast API] -->|4-Day Hourly Forecast| B3[Weather Forecast Stream]
+    subgraph Data_Sources ["Data Sources & Ingestion"]
+        A1["IoT Turnstiles / Web Scrapers"] -->|Continuous Writes| B1[("Google BigQuery: badi_data.currentfill")]
+        A2["Open-Meteo Historical API"] -->|Hourly Weather Logs| B2["Historical Weather Stream"]
+        A3["Open-Meteo Forecast API"] -->|4-Day Hourly Forecast| B3["Weather Forecast Stream"]
     end
 
-    subgraph Data Preprocessing & Grid Alignment
-        B1 -->|`fetchOccupancy.py` / `smartUpdate.py`| C1[Occupancy Parquet]
-        B2 -->|`fetchHistoricalWeather.py`| C2[Historical Weather Parquet]
-        B3 -->|`fetchForecast.py`| C3[Forecast Parquet]
+    subgraph Data_Prep ["Data Preprocessing & Grid Alignment"]
+        B1 -->|"fetchOccupancy.py / smartUpdate.py"| C1["Occupancy Parquet"]
+        B2 -->|"fetchHistoricalWeather.py"| C2["Historical Weather Parquet"]
+        B3 -->|"fetchForecast.py"| C3["Forecast Parquet"]
         
-        C1 & C2 --> D1[5-min Temporal Upsampling & Linear Interpolation]
-        D1 --> D2[Outer Join & Boundary Trimming: Europe/Zurich]
-        C3 --> D3[Forward-Fill Dynamic Covariates]
-        D2 & D3 --> E1[Merged Dataset: occupancy-weather-forecast.parquet]
+        C1 & C2 --> D1["5-min Temporal Upsampling & Linear Interpolation"]
+        D1 --> D2["Outer Join & Boundary Trimming: Europe/Zurich"]
+        C3 --> D3["Forward-Fill Dynamic Covariates"]
+        D2 & D3 --> E1["Merged Dataset: occupancy-weather-forecast.parquet"]
     end
 
-    subgraph Feature Engineering & Time-Series Framing
-        E1 --> F1[Unpivot Multi-Series Wide Format to Long Format]
-        F1 --> F2[Autoregressive Lag Vector: 1, 12, 288]
-        F1 --> F3[Temporal Covariates: Decimal Hour, Weekday, Day of Year]
-        F1 --> F4[Exogenous Weather Covariates: Temp, Cloud, Wind, Rain]
+    subgraph Feature_Eng ["Feature Engineering & Time-Series Framing"]
+        E1 --> F1["Unpivot Multi-Series Wide Format to Long Format"]
+        F1 --> F2["Autoregressive Lag Vector: 1, 12, 288"]
+        F1 --> F3["Temporal Covariates: Decimal Hour, Weekday, Day of Year"]
+        F1 --> F4["Exogenous Weather Covariates: Temp, Cloud, Wind, Rain"]
     end
 
-    subgraph Training & Optuna Optimization
-        F2 & F3 & F4 --> G1[Optuna TPE Sampler: 5000 Trials / HPC Euler R1]
-        G1 --> G2[Optimal Hyperparameters]
-        G2 --> H1[MLForecast Engine: 3 LightGBM Regressors]
-        H1 -->|Objective: Quantile alpha=0.25| I1[Q25 Model]
-        H1 -->|Objective: Quantile alpha=0.50| I2[Q50 Model (Median)]
-        H1 -->|Objective: Quantile alpha=0.75| I3[Q75 Model]
+    subgraph Training_Opt ["Training & Optuna Optimization"]
+        F2 & F3 & F4 --> G1["Optuna TPE Sampler: 5000 Trials / HPC Euler R1"]
+        G1 --> G2["Optimal Hyperparameters"]
+        G2 --> H1["MLForecast Engine: 3 LightGBM Regressors"]
+        H1 -->|Objective: Quantile alpha=0.25| I1["Q25 Model"]
+        H1 -->|Objective: Quantile alpha=0.50| I2["Q50 Model - Median"]
+        H1 -->|Objective: Quantile alpha=0.75| I3["Q75 Model"]
     end
 
-    subgraph Inference & Visualization
-        I1 & I2 & I3 --> J1[Recursive Multi-step Prediction: h=576 steps]
-        J1 --> J2[(inference.parquet)]
-        J2 --> K1[Streamlit App: Predictions.py]
-        J2 --> K2[Data Explorer: Data_Explorer.py]
-        J2 --> K3[Data Availability Heatmap: Data_Availability.py]
+    subgraph Inference_Viz ["Inference & Visualization"]
+        I1 & I2 & I3 --> J1["Recursive Multi-step Prediction: h=576 steps"]
+        J1 --> J2[("inference.parquet")]
+        J2 --> K1["Streamlit App: Predictions.py"]
+        J2 --> K2["Data Explorer: Data_Explorer.py"]
+        J2 --> K3["Data Availability Heatmap: Data_Availability.py"]
+    end
 end
 ```
 
