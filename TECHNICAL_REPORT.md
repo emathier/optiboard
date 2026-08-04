@@ -1,6 +1,4 @@
-# 🏊 Optiboard: Public Pool Occupancy Forecasting & Data Infrastructure
-
-[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://optiboard.streamlit.app)
+# Optiboard: Public Pool Occupancy Forecasting & Data Infrastructure
 
 **Author**: Etienne Mathier  
 **Repository**: [emathier/optiboard](https://github.com/emathier/optiboard)  
