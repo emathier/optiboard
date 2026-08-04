@@ -6,6 +6,12 @@
 
 ---
 
+## 📸 Dashboard Overview
+
+![Optiboard Dashboard Landing Page](landingPage.png)
+
+---
+
 ## 1. Executive Summary
 
 **Optiboard** is an end-to-end time-series forecasting pipeline and interactive web dashboard designed to predict public pool occupancy in Zurich and Bern up to 48 hours into the future at a 5-minute sampling frequency. 
@@ -43,7 +49,7 @@ By combining real-time turnstile IoT data with high-resolution weather observati
                              v
                +---------------------------+
                |     Batch Inference       |
-               |   (48h Horizon / 576 steps|
+               |  (48h Horizon / 576 steps)|
                +-------------+-------------+
                              |
                              v
@@ -110,10 +116,10 @@ end
 
 The system consumes two primary asynchronous streams:
 
-1. **Turnstile Sensor Streams**: Real-time pool visitor counts are continuously scraped into Google BigQuery (`optiswim-scraper.badi_data.currentfill`). Ingestion queries filter records newer than the current local dataset timestamp ([smartUpdate.py](file:///Users/etienne/optiboard/smartUpdate.py#L58-L92)).
+1. **Turnstile Sensor Streams**: Real-time pool visitor counts are continuously scraped into Google BigQuery (`optiswim-scraper.badi_data.currentfill`). Ingestion queries filter records newer than the current local dataset timestamp ([smartUpdate.py](smartUpdate.py#L58-L92)).
 2. **Meteorological Data Streams**: 
-   - **Historical Weather**: Downloaded via Open-Meteo Archive API ([smartUpdate.py](file:///Users/etienne/optiboard/smartUpdate.py#L104-L128)).
-   - **Weather Forecast**: Fetched via Open-Meteo 4-Day Forecast API ([smartUpdate.py](file:///Users/etienne/optiboard/smartUpdate.py#L160-L207)).
+   - **Historical Weather**: Downloaded via Open-Meteo Archive API ([smartUpdate.py](smartUpdate.py#L104-L128)).
+   - **Weather Forecast**: Fetched via Open-Meteo 4-Day Forecast API ([smartUpdate.py](smartUpdate.py#L160-L207)).
 
 | Stream | Source | Attributes Retrieved | Update Freq | Resolution |
 | :--- | :--- | :--- | :--- | :--- |
@@ -125,7 +131,7 @@ The system consumes two primary asynchronous streams:
 
 ### Stage 2: Data Preprocessing & Grid Alignment
 
-Turnstile records arrive at uneven 1-to-5 minute intervals, while weather reports arrive hourly. The pipeline unifies these disparate frequencies into a synchronous 5-minute time series ([smartUpdate.py](file:///Users/etienne/optiboard/smartUpdate.py#L140-L207)):
+Turnstile records arrive at uneven 1-to-5 minute intervals, while weather reports arrive hourly. The pipeline unifies these disparate frequencies into a synchronous 5-minute time series ([smartUpdate.py](smartUpdate.py#L140-L207)):
 
 1. **Timezone Standardization**: All timestamps are parsed and explicitly bound to `Europe/Zurich` (`Europe/Berlin`).
 2. **Temporal Upsampling & Interpolation**: Hourly weather features are upsampled to 5-minute ticks using Polars linear interpolation (`upsample(every='5m').interpolate()`).
@@ -142,7 +148,7 @@ Raw Turnstile Signals:  [10:01: 42 poolers] -> [10:06: 45 poolers] -> ...
 
 ### Stage 3: Feature Engineering & Time-Series Framing
 
-The unified time series is converted into an autoregressive tabular matrix managed by `MLForecast` ([smartUpdate.py](file:///Users/etienne/optiboard/smartUpdate.py#L249-L284)):
+The unified time series is converted into an autoregressive tabular matrix managed by `MLForecast` ([smartUpdate.py](smartUpdate.py#L249-L284)):
 
 ```python
 # Feature extraction pipeline (Polars & MLForecast)
@@ -172,7 +178,7 @@ df_ml = (
 ### Stage 4: Model Architecture & Optuna Hyperparameter Tuning
 
 #### 1. Quantile Regression Engine
-To quantify occupancy uncertainty, the system trains three separate LightGBM models per facility targeting pinball (quantile) loss ([smartUpdate.py](file:///Users/etienne/optiboard/smartUpdate.py#L220-L232)):
+To quantify occupancy uncertainty, the system trains three separate LightGBM models per facility targeting pinball (quantile) loss ([smartUpdate.py](smartUpdate.py#L220-L232)):
 
 $$\mathcal{L}_{\alpha}(y, \hat{y}) = \max\left(\alpha (y - \hat{y}), (\alpha - 1)(y - \hat{y})\right)$$
 
@@ -181,7 +187,7 @@ $$\mathcal{L}_{\alpha}(y, \hat{y}) = \max\left(\alpha (y - \hat{y}), (\alpha - 1
 - $Q_{75}$ ($\alpha = 0.75$): Upper confidence bound.
 
 #### 2. Distributed Hyperparameter Optimization (Optuna on HPC)
-Hyperparameters were optimized across 5,000 trials on the ETH Euler HPC cluster using Optuna's Tree-structured Parzen Estimator (**TPE Sampler**) with isolated worker processes bounded by 70-second execution timeouts ([model_v1/hyperops-tunning-rmse.py](file:///Users/etienne/optiboard/model_v1/hyperops-tunning-rmse.py#L86-L140)).
+Hyperparameters were optimized across 5,000 trials on the ETH Euler HPC cluster using Optuna's Tree-structured Parzen Estimator (**TPE Sampler**) with isolated worker processes bounded by 70-second execution timeouts ([model_v1/hyperops-tunning-rmse.py](model_v1/hyperops-tunning-rmse.py#L86-L140)).
 
 ```
                        +---------------------------------------+
@@ -203,7 +209,7 @@ Hyperparameters were optimized across 5,000 trials on the ETH Euler HPC cluster 
 | Hyperparameter | Search Space Range | Optimal Value Selected |
 | :--- | :--- | :--- |
 | `max_depth` | $[1, 10]$ | **4** |
-| `num_leaves` | $[20, 8000]$ (constrained to $\le 2^{\text{max\_depth}}$) | **16** |
+| `num_leaves` | $[20, 8000]$ (constrained to $\le 2^{\text{max depth}}$) | **16** |
 | `min_child_samples` | $[5, 100]$ | **22** |
 | `learning_rate` | $[0.001, 0.3]$ (log scale) | **0.08246** |
 | `n_estimators` | $[10, 1000]$ | **53** |
@@ -216,7 +222,7 @@ Hyperparameters were optimized across 5,000 trials on the ETH Euler HPC cluster 
 
 ### Stage 5: Batch Inference & Uncertainty Quantification
 
-During inference, `MLForecast` recursively predicts $h = 576$ discrete 5-minute steps into the future (48 hours) using incoming weather forecasts as exogenous features $X_{df}$ ([smartUpdate.py](file:///Users/etienne/optiboard/smartUpdate.py#L291-L321)).
+During inference, `MLForecast` recursively predicts $h = 576$ discrete 5-minute steps into the future (48 hours) using incoming weather forecasts as exogenous features $X_{\text{df}}$ ([smartUpdate.py](smartUpdate.py#L291-L321)).
 
 - **Input**: Recent historical actuals + 48-hour forward weather forecast.
 - **Output**: `data-files/inference.parquet` containing timestamped predictions per pool for $Q_{25}$, $Q_{50}$, and $Q_{75}$.
@@ -225,35 +231,16 @@ During inference, `MLForecast` recursively predicts $h = 576$ discrete 5-minute 
 
 ### Stage 6: Frontend Dashboard & Data Delivery Layer
 
-The visual dashboard is built using Streamlit and Plotly, delivering real-time predictions and historical exploration ([streamlit/Predictions.py](file:///Users/etienne/optiboard/streamlit/Predictions.py)).
-
-```
-+-----------------------------------------------------------------------------------+
-|  🔮 POOL OCCUPANCY PREDICTIONS (ZÜRICH & BERN)                                    |
-+-----------------------------------------------------------------------------------+
-| [ Latest Occupancy: 142 ] | [ Peak Tomorrow: 380 ] | [ Weather: ☀️ 24°C / No Rain ] |
-+-----------------------------------------------------------------------------------+
-|                                                                                   |
-|   Occupancy                                                                       |
-|      ^                                                                            |
-|  400 |                     /---\   <-- Upper Bound (Q75)                          |
-|  300 |         Actual     /  *  \  <-- Forecast (Q50)                             |
-|  200 |        *---*      /   |   \                                                |
-|  100 |       /     \____/____|____\__ <-- Lower Bound (Q25)                       |
-|    0 +-------------------------------------> Time                                 |
-|         Historical              48-Hour Forecast                                  |
-|                                                                                   |
-+-----------------------------------------------------------------------------------+
-```
+The visual dashboard is built using Streamlit and Plotly, delivering real-time predictions and historical exploration ([streamlit/Predictions.py](streamlit/Predictions.py)).
 
 #### Dashboard Architecture & Page Structure
 
-1. **Predictions Landing Page** ([streamlit/Predictions.py](file:///Users/etienne/optiboard/streamlit/Predictions.py)):
+1. **Predictions Landing Page** ([streamlit/Predictions.py](streamlit/Predictions.py)):
    - **Data Fetching Strategy**: Pulls raw `inference.parquet` directly from GitHub CDN with fallback to local filesystem, cached with `@st.cache_data(ttl="15m")`.
    - **Plotly Visualizations**: Renders actuals alongside dashed median forecasts ($Q_{50}$) and translucent filled confidence bands ($Q_{25}$–$Q_{75}$).
    - **Metric Cards**: Dynamic KPI summaries for *Current Occupancy*, *Predicted Peak*, and *Rain Alerts*.
-2. **Data Explorer** ([streamlit/pages/Data_Explorer.py](file:///Users/etienne/optiboard/streamlit/pages/Data_Explorer.py)): Multi-pool historical comparison interface with custom date pickers, aggregated weather metrics, and CSV/Parquet data export.
-3. **Data Availability Diagnostics** ([streamlit/pages/Data_Availability.py](file:///Users/etienne/optiboard/streamlit/pages/Data_Availability.py)): Heatmap monitoring system tracking sensor data completeness across historical calendar days.
+2. **Data Explorer** ([streamlit/pages/Data_Explorer.py](streamlit/pages/Data_Explorer.py)): Multi-pool historical comparison interface with custom date pickers, aggregated weather metrics, and CSV/Parquet data export.
+3. **Data Availability Diagnostics** ([streamlit/pages/Data_Availability.py](streamlit/pages/Data_Availability.py)): Heatmap monitoring system tracking sensor data completeness across historical calendar days.
 4. **Analytics & Privacy**: Injected Google Analytics script with safe cross-origin iframe security error handling.
 
 ---
@@ -261,10 +248,10 @@ The visual dashboard is built using Streamlit and Plotly, delivering real-time p
 ## 4. Pipeline Orchestration & Environment Setup
 
 ### Orchestration
-The primary data and ML workflow is orchestrated reactively via **Marimo** ([smartUpdate.py](file:///Users/etienne/optiboard/smartUpdate.py)), enabling seamless execution either as an interactive notebook or headlessly via standard Python CLI.
+The primary data and ML workflow is orchestrated reactively via **Marimo** ([smartUpdate.py](smartUpdate.py)), enabling seamless execution either as an interactive notebook or headlessly via standard Python CLI.
 
 ### Package & Dependency Management
-Project dependencies and build tools are locked using **Pixi** ([pixi.toml](file:///Users/etienne/optiboard/pixi.toml)):
+Project dependencies and build tools are locked using **Pixi** ([pixi.toml](pixi.toml)):
 
 ```bash
 # Launch interactive Streamlit dashboard
@@ -280,10 +267,17 @@ pixi run refresh-data
 
 | Subsystem | Tooling / Framework | Primary Data Format | Key Artifact / File |
 | :--- | :--- | :--- | :--- |
-| **Ingestion** | Google BigQuery Client, Open-Meteo REST API | JSON / Arrow | [scripts/fetchOccupancy.py](file:///Users/etienne/optiboard/scripts/fetchOccupancy.py) |
+| **Ingestion** | Google BigQuery Client, Open-Meteo REST API | JSON / Arrow | [scripts/fetchOccupancy.py](scripts/fetchOccupancy.py) |
 | **Storage** | Apache Parquet (Snappy Compression) | Parquet DataFrames | `data-files/*.parquet` |
-| **Transformation** | Polars | Micro-second LazyFrames | [smartUpdate.py](file:///Users/etienne/optiboard/smartUpdate.py#L140-L207) |
-| **ML Engine** | LightGBM, MLForecast | Serialized Pickle Dict | [model_v1/model1.pkl](file:///Users/etienne/optiboard/model_v1/model1.pkl) |
-| **Hyperparam Tuning**| Optuna (TPE Sampler), SQLite | SQLite DB | [model_v1/hyperops-tunning-rmse.py](file:///Users/etienne/optiboard/model_v1/hyperops-tunning-rmse.py) |
-| **Frontend** | Streamlit, Plotly, HTML/CSS | Interactive Web UI | [streamlit/Predictions.py](file:///Users/etienne/optiboard/streamlit/Predictions.py) |
-| **Environment** | Pixi | Lockfile (`pixi.lock`) | [pixi.toml](file:///Users/etienne/optiboard/pixi.toml) |
+| **Transformation** | Polars | Micro-second LazyFrames | [smartUpdate.py](smartUpdate.py#L140-L207) |
+| **ML Engine** | LightGBM, MLForecast | Serialized Pickle Dict | [model_v1/model1.pkl](model_v1/model1.pkl) |
+| **Hyperparam Tuning**| Optuna (TPE Sampler), SQLite | SQLite DB | [model_v1/hyperops-tunning-rmse.py](model_v1/hyperops-tunning-rmse.py) |
+| **Frontend** | Streamlit, Plotly, HTML/CSS | Interactive Web UI | [streamlit/Predictions.py](streamlit/Predictions.py) |
+| **Environment** | Pixi | Lockfile (`pixi.lock`) | [pixi.toml](pixi.toml) |
+
+---
+
+## ⚠️ AI & Technical Disclaimer
+
+* **AI Assistance**: Agentic AI (Google Antigravity / Gemini) was utilized to structure and draft this technical report and assist in refining the layout and styling of the Streamlit frontend interface. Almost all core backend components—including the real-time BigQuery web scrapers, Polars data processing pipelines, MLForecast training architectures, and Optuna hyperparameter optimization scripts executed on the ETH Euler HPC cluster—were developed by hand.
+* **Model Estimates & Weather Dependency**: Predictions are statistical expectations generated from historical turnstile patterns and third-party meteorological forecasts (Open-Meteo). Deviations can occur due to unexpected weather shifts, local pool maintenance, public holidays, or sensor outages.
